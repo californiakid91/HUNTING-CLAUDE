@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HUNTING CLAUDE">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a2e1a">
+<meta name="description" content="Preparación Licencia de Armas - Guardia Civil">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Apple Touch Icons (generados via canvas inline) -->
+<link rel="apple-touch-icon" href="icon-192.png" id="apple-touch-icon">
+
+<title>HUNTING CLAUDE</title>
+
+<!-- Google Fonts con fallback offline -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── FUENTES OFFLINE FALLBACK ───────────────────────── */
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('BebasNeue'), local('Bebas Neue');
+}
+
+:root {
+  --green-dark: #1a2e1a;
+  --green-mid: #2d4a2d;
+  --green-light: #3d6b3d;
+  --green-accent: #4a8c4a;
+  --orange: #ff6b00;
+  --orange-neon: #ff8c00;
+  --orange-bright: #ffaa00;
+  --cream: #f5f0e8;
+  --white: #ffffff;
+  --red: #e53e3e;
+  --red-light: #feb2b2;
+  --success: #48bb78;
+  --success-light: #c6f6d5;
+  --gray-dark: #1a1a1a;
+  --gray-mid: #2d2d2d;
+  --gray-light: #404040;
+  --text-muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { height: 100%; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--green-dark);
+  color: var(--white);
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CAMO TEXTURE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(45,74,45,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(26,46,26,0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(61,107,61,0.2) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cellipse cx='30' cy='40' rx='25' ry='15' fill='%232d4a2d' opacity='0.3'/%3E%3Cellipse cx='120' cy='80' rx='35' ry='20' fill='%231a2e1a' opacity='0.25'/%3E%3Cellipse cx='70' cy='150' rx='28' ry='18' fill='%233d6b3d' opacity='0.2'/%3E%3Cellipse cx='170' cy='30' rx='22' ry='14' fill='%232d4a2d' opacity='0.25'/%3E%3Cellipse cx='160' cy='140' rx='30' ry='16' fill='%231a2e1a' opacity='0.2'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: var(--safe-bottom);
+}
+
+/* ── INSTALL BANNER ────────────────────────────────── */
+.install-banner {
+  background: rgba(255,107,0,0.15);
+  border-bottom: 1px solid rgba(255,107,0,0.3);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--orange-bright);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+}
+.install-banner .install-text { flex: 1; line-height: 1.4; }
+.install-banner .install-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 18px; cursor: pointer; padding: 4px;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.header {
+  padding: 16px 20px 12px;
+  padding-top: calc(16px + var(--safe-top));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(26,46,26,0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo { display: flex; align-items: center; gap: 10px; }
+
+.logo-icon { width: 38px; height: 38px; flex-shrink: 0; }
+
+.logo-text { display: flex; flex-direction: column; line-height: 1; }
+
+.logo-text .brand {
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.logo-text .tagline {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.stats-btn {
+  background: rgba(255,107,0,0.15);
+  border: 1px solid rgba(255,107,0,0.3);
+  color: var(--orange);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  -webkit-appearance: none;
+}
+.stats-btn:active { background: rgba(255,107,0,0.25); }
+
+/* ── SCREENS ─────────────────────────────────────────── */
+.screen { display: none; padding: 20px; }
+.screen.active { display: block; }
+
+/* ── HOME ────────────────────────────────────────────── */
+.home-hero { text-align: center; padding: 28px 0 18px; }
+
+.home-hero h1 {
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 46px;
+  letter-spacing: 4px;
+  color: var(--white);
+  line-height: 1;
+}
+
+.home-hero h1 span { color: var(--orange); }
+
+.home-hero p { color: var(--text-muted); font-size: 13px; margin-top: 8px; letter-spacing: 1px; }
+
+.total-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,107,0,0.1);
+  border: 1px solid rgba(255,107,0,0.2);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--orange-bright);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+
+.mode-card {
+  background: rgba(45,74,45,0.4);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  -webkit-appearance: none;
+}
+
+.mode-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,107,0,0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.mode-card:active::before { opacity: 1; }
+.mode-card:active { transform: scale(0.97); }
+.mode-card.practice { border-color: rgba(74,140,74,0.4); }
+.mode-card.exam { border-color: rgba(255,107,0,0.3); }
+
+.mode-card .card-icon { font-size: 30px; margin-bottom: 10px; display: block; }
+
+.mode-card .card-title {
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 19px;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.mode-card.exam .card-title { color: var(--orange); }
+
+.mode-card .card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+.mode-card .card-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.practice .card-badge {
+  background: rgba(74,140,74,0.2);
+  color: var(--success);
+  border: 1px solid rgba(74,140,74,0.3);
+}
+
+.exam .card-badge {
+  background: rgba(255,107,0,0.15);
+  color: var(--orange);
+  border: 1px solid rgba(255,107,0,0.3);
+}
+
+.theme-selector { margin-top: 22px; }
+
+.section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.theme-list { display: flex; flex-direction: column; gap: 10px; }
+
+.theme-item {
+  background: rgba(45,74,45,0.3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-item:active { transform: scale(0.98); background: rgba(45,74,45,0.5); }
+
+.theme-item-left { display: flex; align-items: center; gap: 12px; }
+
+.theme-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255,107,0,0.15);
+  border: 1px solid rgba(255,107,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 16px;
+  color: var(--orange);
+  flex-shrink: 0;
+}
+
+.theme-info .theme-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--white);
+}
+
+.theme-info .theme-count { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+.theme-progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  margin-top: 5px;
+  overflow: hidden;
+  width: 90px;
+}
+
+.theme-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-accent), var(--orange));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.theme-arrow { color: var(--text-muted); font-size: 18px; }
+
+/* ── QUIZ ────────────────────────────────────────────── */
+.quiz-header { margin-bottom: 16px; }
+
+.quiz-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+
+.quiz-meta-left { display: flex; align-items: center; gap: 8px; }
+
+.back-btn {
+  background: rgba(255,255,255,0.07);
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+  -webkit-appearance: none;
+}
+.back-btn:active { background: rgba(255,255,255,0.15); }
+
+.quiz-mode-badge {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.quiz-mode-badge.practice {
+  background: rgba(74,140,74,0.2);
+  color: var(--success);
+  border: 1px solid rgba(74,140,74,0.3);
+}
+
+.quiz-mode-badge.exam {
+  background: rgba(255,107,0,0.15);
+  color: var(--orange);
+  border: 1px solid rgba(255,107,0,0.3);
+}
+
+/* TIMER */
+.timer-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(26,26,26,0.6);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+}
+
+.timer-icon { font-size: 16px; }
+
+.timer-display {
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--white);
+  transition: color 0.3s;
+  min-width: 55px;
+}
+
+.timer-display.warning { color: var(--orange); }
+.timer-display.danger { color: var(--red); animation: pulse 1s infinite; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.timer-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success), var(--orange));
+  border-radius: 3px;
+  transition: width 1s linear, background 0.3s;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.progress-text { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 13px; color: var(--text-muted); }
+
+.progress-score { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; color: var(--orange); }
+
+.progress-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-accent), var(--orange));
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* QUESTION CARD */
+.question-card {
+  background: rgba(45,74,45,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 22px 18px;
+  margin-bottom: 18px;
+}
+
+.question-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.question-text { font-size: 15px; line-height: 1.65; color: var(--white); font-weight: 400; }
+
+/* ANSWERS */
+.answers-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+
+.answer-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 15px 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  width: 100%;
+  color: var(--white);
+  -webkit-appearance: none;
+}
+
+.answer-btn:active:not(:disabled) { transform: scale(0.98); }
+.answer-btn:disabled { cursor: default; }
+
+.answer-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+
+.answer-text { font-size: 14px; line-height: 1.5; padding-top: 4px; font-weight: 400; }
+
+.answer-btn.correct { background: rgba(72,187,120,0.15); border-color: var(--success); animation: correctPulse 0.35s ease; }
+.answer-btn.correct .answer-letter { background: var(--success); color: white; }
+.answer-btn.wrong { background: rgba(229,62,62,0.12); border-color: var(--red); }
+.answer-btn.wrong .answer-letter { background: var(--red); color: white; }
+
+@keyframes correctPulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+/* FEEDBACK */
+.feedback-box {
+  background: rgba(26,26,26,0.5);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  display: none;
+  animation: slideUp 0.25s ease;
+}
+
+.feedback-box.show { display: flex; align-items: flex-start; gap: 12px; }
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.feedback-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+.feedback-content .feedback-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.feedback-content .feedback-title.correct { color: var(--success); }
+.feedback-content .feedback-title.wrong { color: var(--red); }
+.feedback-content .feedback-correct { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+.feedback-content .feedback-correct strong { color: var(--success); }
+
+/* NEXT BTN */
+.next-btn {
+  background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+  border: none;
+  border-radius: 14px;
+  padding: 16px 24px;
+  width: 100%;
+  color: white;
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.3);
+  -webkit-appearance: none;
+  margin-bottom: 20px;
+}
+
+.next-btn.show { display: block; }
+.next-btn:active { transform: scale(0.98); }
+
+/* TIME UP */
+.time-up-banner {
+  background: rgba(229,62,62,0.2);
+  border: 1px solid rgba(229,62,62,0.4);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--red);
+  letter-spacing: 1px;
+  display: none;
+}
+
+/* ── RESULTS ─────────────────────────────────────────── */
+.results-screen { text-align: center; padding: 10px 0 20px; }
+
+.result-circle { width: 150px; height: 150px; margin: 16px auto; position: relative; }
+.result-circle svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+.result-circle-bg { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 10; }
+.result-circle-fill {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 376;
+  stroke-dashoffset: 376;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.result-circle-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-pct { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 42px; line-height: 1; color: var(--white); }
+.result-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+
+.result-verdict {
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 28px;
+  letter-spacing: 3px;
+  margin-bottom: 5px;
+}
+
+.result-verdict.pass { color: var(--success); }
+.result-verdict.fail { color: var(--red); }
+
+.result-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+
+.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+
+.result-stat {
+  background: rgba(45,74,45,0.3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.result-stat .stat-num { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 28px; color: var(--white); line-height: 1; }
+.result-stat .stat-num.green { color: var(--success); }
+.result-stat .stat-num.red { color: var(--red); }
+.result-stat .stat-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-top: 4px; }
+
+.result-btns { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+  border: none;
+  border-radius: 14px;
+  padding: 16px 24px;
+  width: 100%;
+  color: white;
+  font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.25);
+  -webkit-appearance: none;
+}
+
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 14px 24px;
+  width: 100%;
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+
+.btn-secondary:active { background: rgba(255,255,255,0.1); }
+
+.exam-pass-line { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+.exam-pass-line span.need { color: var(--orange-bright); font-weight: 600; }
+.exam-pass-line span.got.pass { color: var(--success); font-weight: 600; }
+.exam-pass-line span.got.fail { color: var(--red); font-weight: 600; }
+
+/* ── REVIEW ─────────────────────────────────────────── */
+.review-list { display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 30px; }
+
+.review-item {
+  background: rgba(45,74,45,0.25);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  border-left: 3px solid var(--border);
+}
+
+.review-item.correct-q { border-left-color: var(--success); }
+.review-item.wrong-q { border-left-color: var(--red); }
+
+.review-q-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.review-icon { font-size: 14px; }
+.review-num { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: var(--text-muted); }
+.review-q-text { font-size: 13px; color: var(--white); line-height: 1.5; margin-bottom: 10px; }
+.review-answers { display: flex; flex-direction: column; gap: 6px; }
+
+.review-answer {
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.03);
+}
+
+.review-answer.is-correct { background: rgba(72,187,120,0.12); color: var(--success); border: 1px solid rgba(72,187,120,0.2); }
+.review-answer.was-selected.wrong { background: rgba(229,62,62,0.1); color: var(--red); border: 1px solid rgba(229,62,62,0.2); }
+.review-letter { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 14px; flex-shrink: 0; }
+
+/* ── STATS ─────────────────────────────────────────── */
+.stats-tabs { display: flex; gap: 10px; margin: 14px 0; }
+
+.stat-tab {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  -webkit-appearance: none;
+}
+
+.stat-tab.active { background: rgba(255,107,0,0.15); border-color: rgba(255,107,0,0.3); color: var(--orange); }
+
+.stats-body { padding: 0 20px 30px; }
+
+.stats-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+
+.overview-card { background: rgba(45,74,45,0.3); border: 1px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; }
+.overview-card .ov-num { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 28px; line-height: 1; color: var(--orange); }
+.overview-card .ov-label { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+.stats-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.theme-stat-card { background: rgba(45,74,45,0.25); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.theme-stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.theme-stat-name { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 13px; color: var(--white); }
+.theme-stat-pct { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 18px; color: var(--orange); }
+
+.theme-stat-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+.theme-stat-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+.theme-stat-counts { display: flex; gap: 12px; font-size: 11px; color: var(--text-muted); }
+.count-correct { color: var(--success); }
+.count-wrong { color: var(--red); }
+
+.reset-btn {
+  width: 100%;
+  margin-top: 20px;
+  background: rgba(229,62,62,0.1);
+  border: 1px solid rgba(229,62,62,0.3);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--red);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+
+.reset-btn:active { background: rgba(229,62,62,0.2); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 36px 20px; }
+.empty-state .empty-icon { font-size: 38px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* HISTORY */
+.history-item {
+  background: rgba(45,74,45,0.2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-item-left { font-size: 12px; color: var(--text-muted); }
+.history-item-left strong { display: block; color: var(--white); font-size: 13px; margin-bottom: 2px; }
+.history-item-right { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 22px; color: var(--orange); }
+.history-item-right.pass { color: var(--success); }
+.history-item-right.fail { color: var(--red); }
+
+/* SHARED STICKY HEADER */
+.sticky-subheader {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  background: rgba(26,46,26,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-overlay.show { display: flex; }
+
+.modal-box {
+  background: var(--green-mid);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px;
+  padding-bottom: calc(24px + var(--safe-bottom));
+  width: 100%;
+  max-width: 480px;
+  animation: slideUpModal 0.28s ease;
+}
+
+@keyframes slideUpModal { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.modal-title { font-family: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif; font-size: 22px; letter-spacing: 2px; margin-bottom: 8px; }
+.modal-text { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+.modal-btns { display: flex; gap: 10px; }
+
+.modal-cancel {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.modal-confirm {
+  flex: 1;
+  background: rgba(229,62,62,0.2);
+  border: 1px solid rgba(229,62,62,0.3);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--red);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.modal-confirm:active { background: rgba(229,62,62,0.3); }
+
+/* offline indicator */
+.offline-pill {
+  position: fixed;
+  bottom: calc(16px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(229,62,62,0.9);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1px;
+  z-index: 300;
+  display: none;
+  backdrop-filter: blur(6px);
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- INSTALL BANNER (iOS) -->
+  <div class="install-banner" id="install-banner" style="display:none;">
+    <div class="install-text">📲 Instala la app: Safari → Compartir → <strong>Añadir a pantalla de inicio</strong></div>
+    <button class="install-close" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <svg class="logo-icon" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="19" cy="19" r="18" stroke="#ff6b00" stroke-width="1.5" fill="rgba(255,107,0,0.08)"/>
+        <line x1="19" y1="3" x2="19" y2="35" stroke="#ff6b00" stroke-width="1.5"/>
+        <line x1="3" y1="19" x2="35" y2="19" stroke="#ff6b00" stroke-width="1.5"/>
+        <circle cx="19" cy="19" r="4" fill="#ff6b00"/>
+        <circle cx="19" cy="19" r="7" stroke="#ff8c00" stroke-width="1" fill="none" stroke-dasharray="2,2"/>
+      </svg>
+      <div class="logo-text">
+        <span class="brand">HUNTING CLAUDE</span>
+        <span class="tagline">Licencia de Armas · GC</span>
+      </div>
+    </div>
+    <button class="stats-btn" onclick="showStats()">📊 STATS</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <h1>PREPARA<br>TU <span>EXAMEN</span></h1>
+      <p>Permiso de Armas · Guardia Civil</p>
+      <div class="total-badge">🎯 400 preguntas · 6 temas</div>
+    </div>
+
+    <div class="mode-cards">
+      <div class="mode-card practice" onclick="showPracticeMenu()">
+        <span class="card-icon">📚</span>
+        <div class="card-title">MODO<br>PRÁCTICA</div>
+        <div class="card-desc">Entrena por temas con feedback inmediato</div>
+        <span class="card-badge">POR TEMA</span>
+      </div>
+      <div class="mode-card exam" onclick="startExam()">
+        <span class="card-icon">🏆</span>
+        <div class="card-title">MODO<br>EXAMEN</div>
+        <div class="card-desc">20 preguntas · 20 min · Mínimo 16/20</div>
+        <span class="card-badge">⏱ 20 MIN</span>
+      </div>
+    </div>
+
+    <div class="theme-selector">
+      <div class="section-title">Práctica por temas</div>
+      <div class="theme-list" id="theme-list"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <div class="quiz-meta-left">
+          <button class="back-btn" onclick="confirmExit()">←</button>
+          <span class="quiz-mode-badge" id="quiz-mode-badge">PRÁCTICA</span>
+        </div>
+        <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--text-muted)" id="quiz-topic-label"></div>
+      </div>
+
+      <div class="timer-bar" id="timer-bar" style="display:none;">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer-display">20:00</span>
+        <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+      </div>
+
+      <div class="time-up-banner" id="time-up-banner">⚠️ TIEMPO AGOTADO — Calculando nota...</div>
+
+      <div class="progress-info">
+        <span class="progress-text" id="progress-text">Pregunta 1 de 20</span>
+        <span class="progress-score" id="progress-score">✓ 0 · ✗ 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:5%"></div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-num" id="question-num">PREGUNTA 1</div>
+      <div class="question-text" id="question-text"></div>
+    </div>
+
+    <div class="answers-list" id="answers-list"></div>
+
+    <div class="feedback-box" id="feedback-box">
+      <span class="feedback-icon" id="feedback-icon"></span>
+      <div class="feedback-content">
+        <div class="feedback-title" id="feedback-title"></div>
+        <div class="feedback-correct" id="feedback-correct"></div>
+      </div>
+    </div>
+
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">SIGUIENTE →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="results-screen">
+      <div class="result-verdict" id="result-verdict"></div>
+      <div class="result-subtitle" id="result-subtitle"></div>
+
+      <div class="result-circle">
+        <svg viewBox="0 0 150 150">
+          <circle class="result-circle-bg" cx="75" cy="75" r="60"/>
+          <circle class="result-circle-fill" id="result-circle-fill" cx="75" cy="75" r="60"/>
+        </svg>
+        <div class="result-circle-text">
+          <span class="result-pct" id="result-pct">0%</span>
+          <span class="result-label">NOTA</span>
+        </div>
+      </div>
+
+      <div class="time-up-banner" id="result-timeup" style="text-align:center;margin-bottom:14px;"></div>
+      <div class="exam-pass-line" id="exam-pass-line" style="display:none;"></div>
+
+      <div class="result-stats">
+        <div class="result-stat"><div class="stat-num" id="stat-total"></div><div class="stat-label">TOTAL</div></div>
+        <div class="result-stat"><div class="stat-num green" id="stat-correct"></div><div class="stat-label">CORRECTAS</div></div>
+        <div class="result-stat"><div class="stat-num red" id="stat-wrong"></div><div class="stat-label">FALLADAS</div></div>
+      </div>
+
+      <div class="result-btns">
+        <button class="btn-primary" onclick="showReview()">VER REVIEW COMPLETO</button>
+        <button class="btn-secondary" onclick="goHome()">← VOLVER AL MENÚ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW -->
+  <div class="screen" id="screen-review">
+    <div class="sticky-subheader">
+      <button class="back-btn" onclick="showScreen('screen-results')">←</button>
+      <div>
+        <div style="font-family:'Bebas Neue','Arial Narrow',Impact,sans-serif;font-size:20px;letter-spacing:2px;">REVIEW</div>
+        <div style="font-size:11px;color:var(--text-muted);">Repaso de todas las preguntas</div>
+      </div>
+    </div>
+    <div class="review-list" id="review-list"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="screen" id="screen-stats">
+    <div class="sticky-subheader">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div>
+        <div style="font-family:'Bebas Neue','Arial Narrow',Impact,sans-serif;font-size:22px;letter-spacing:3px;">ESTADÍSTICAS</div>
+        <div style="font-size:11px;color:var(--text-muted);">Tu progreso de entrenamiento</div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px;">
+      <div class="stats-tabs">
+        <button class="stat-tab active" onclick="switchStatTab('practice')" id="tab-practice">PRÁCTICA</button>
+        <button class="stat-tab" onclick="switchStatTab('exam')" id="tab-exam">EXAMEN</button>
+      </div>
+    </div>
+
+    <div class="stats-body">
+      <div id="stats-practice">
+        <div class="stats-overview" id="practice-overview"></div>
+        <div class="stats-section-title">RENDIMIENTO POR TEMA</div>
+        <div id="practice-theme-stats"></div>
+      </div>
+      <div id="stats-exam" style="display:none;">
+        <div class="stats-overview" id="exam-overview"></div>
+        <div class="stats-section-title">HISTORIAL DE EXÁMENES</div>
+        <div id="exam-history"></div>
+      </div>
+      <button class="reset-btn" onclick="confirmReset()">🗑 RESETEAR ESTADÍSTICAS</button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-text" id="modal-text"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">CANCELAR</button>
+      <button class="modal-confirm" id="modal-confirm-btn">CONFIRMAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- OFFLINE PILL -->
+<div class="offline-pill" id="offline-pill">📵 Sin conexión · Modo offline</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// QUESTIONS DATA — 400 preguntas embebidas
+// ════════════════════════════════════════════════════════════
+const QUESTIONS_DATA = {"TEMA I":[{"question":"El arma de fuego que se recarga automáticamente, después de cada disparo, efectuando varios disparos sucesivos accionando el disparador una sola vez, se denomina:","answers":["Arma de fuego semiautomática","Arma de fuego de repetición","Arma de fuego automática"],"correct":2},{"question":"El arma de fuego que después de cada disparo, se recarga automáticamente y solo es posible efectuar un disparo al accionar el disparador cada vez, se denomina:","answers":["Arma de fuego semiautomática","Arma de fuego de repetición","Arma de fuego automática"],"correct":0},{"question":"Si el arma de fuego se recarga después de cada disparo, mediante un mecanismo accionado por el tirador, estaremos ante:","answers":["Arma de fuego semiautomática","Arma de fuego de repetición","Arma de fuego automática"],"correct":1},{"question":"¿Como se denomina el arma de fuego sin depósito de municiones, que se carga antes de cada disparo mediante la introducción manual de un cartucho en la recámara, o alojamiento especial a la entrada del cañón?:","answers":["Arma de un solo tiro","Arma de fuego automática","Arma de fuego semiautomática"],"correct":0},{"question":"¿Qué elemento de un arma de fuego conduce y estabiliza el proyectil?.","answers":["El disparador","El cañón","El estabilizador"],"correct":1},{"question":"La culata de un arma sirve para:","answers":["Instalar en ella el punto de mira","Apoyar el arma sobre el hombro para efectuar el disparo","Las armas no tienen culata"],"correct":1},{"question":"Las ánimas de los cañones de escopetas son:","answers":["Estriadas","Lisas o estriadas","Con rayas paralelas"],"correct":1},{"question":"Las ánimas de los cañones de un rifle son:","answers":["Lisas","Estriadas","Estriadas o lisas, dependiendo del fabricante"],"correct":1},{"question":"En una escopeta semiautomática, el percutor, extractor y grapón, son piezas que componen:","answers":["Cerrojo","Culata","Cajón de los mecanismos"],"correct":0},{"question":"¿Qué pieza o piezas protege el guardamonte?.","answers":["La biela y el fiador","El disparador","Es macizo"],"correct":1},{"question":"¿Qué misión tiene el muelle del cargador de un rifle?","answers":["Mantener presión en los cartuchos","Expulsar la vaina cuando se produce el disparo","Elevar el cartucho y colocarlo frente a la recámara"],"correct":2},{"question":"En un arma semiautomática, ¿qué pieza introduce el cartucho en el interior de la recámara?.","answers":["El cierre","El muelle elevador","La biela"],"correct":0},{"question":"En escopetas superpuestas, ¿qué misión tiene la banda intermedia ventilada, existente entre los cañones?.","answers":["Refrigerar los cañones","Amortiguar el efecto de los vientos laterales","Las dos anteriores"],"correct":2},{"question":"¿Qué mecanismo se encuentra en el interior del cerrojo de un rifle?.","answers":["Mecanismo de percusión","Mecanismo de disparo","Mecanismo de expulsión"],"correct":0},{"question":"¿De qué partes se compone el mecanismo de percusión?","answers":["Percutor y muelle del percutor","Percutor y cabeza del cierre","Cabeza y punta del percutor"],"correct":0},{"question":"En un rifle, ¿qué pieza arrastra el cartucho hacia la recámara?.","answers":["El cerrojo","El elevador","El percutor"],"correct":0},{"question":"Para la expulsión del cartucho, ¿qué pieza engarza el culote del cartucho cuándo está alojado en la recámara?.","answers":["Cerrojo","Tope de cerrojo","Uña extractora"],"correct":2},{"question":"En un rifle, ¿qué pieza expulsa la vaina del cartucho de la recámara?.","answers":["No hay pieza, es la propia mano del tirador","El muelle de recuperación","El extractor"],"correct":2},{"question":"El choke de una escopeta consiste en:","answers":["El estriado de la boca de fuego","Reducción de la boca de recámara","Estrangulamiento de la boca de fuego"],"correct":2},{"question":"El choke en el rifle semiautomático consiste :","answers":["El estriado de la boca de fuego","Reducción de la boca de fuego","Carecen de choke"],"correct":2},{"question":"¿A qué se denominan extractores en una escopeta superpuesta?:","answers":["Dos uñas que sirven para desalojar los cartuchos de su recámara","A sendas bielas que conectan el disparador con las agujas percutoras","Dos muelles planos de acción helicoidal"],"correct":0},{"question":"En un arma larga rayada, ¿qué forma tiene la recámara?","answers":["La del proyectil","La de la vaina","La del cartucho"],"correct":2},{"question":"En las armas largas rayadas de caza mayor, ¿cómo es la percusión?","answers":["Percusión central","Percusión adelantada","Sistema «Flobert»"],"correct":0},{"question":"¿Qué dispositivo bloquea el funcionamiento del mecanismo de disparo a voluntad del tirador?","answers":["Elementos de Puntería","Nada","Seguro manual"],"correct":2},{"question":"¿Cómo se denomina el extremo del cañón de una escopeta opuesto a la parte en que se aloja el cartucho?","answers":["Boca","Cámara","Recámara"],"correct":0},{"question":"¿Cuando decimos que una arma esta montada?.","answers":["Cuando esta preparada para hacer fuego","Que está totalmente ensamblada","Ser portada por el tirador"],"correct":0},{"question":"Arma alimentada es aquella que:","answers":["Tiene la munición alojada en el mecanismo de alimentación","Ya ha efectuado el disparo","No tiene munición en el mecanismo de alimentación"],"correct":0},{"question":"Arma montada es aquella que:","answers":["El mecanismo de disparo y percusión se encuentra en disposición de disparo","Está ensamblada y pavonada","Está ensamblada pero no pavonada"],"correct":0},{"question":"¿Dónde se aloja el cartucho de un arma para ser disparado?.","answers":["En el cargador","En la recámara","En la canana"],"correct":1},{"question":"¿Por dónde expulsa una escopeta semiautomática el cartucho disparado.?","answers":["Por la ventana trasera del arma","Por la ventana de ventilación","Por la ventana de expulsión"],"correct":2},{"question":"Para alimentar una escopeta semiautomática debemos:","answers":["Introducir los cartuchos en la recámara","Colocar los cartuchos en el depósito","Montar el arma"],"correct":1},{"question":"¿Qué diferencia existe entre cargar y alimentar un arma?","answers":["Cargar es montarla para disparar, alimentarla es introducir cartuchos en el depósito","Cargar es introducir cartuchos en el deposito, alimentarla es montarla para disparar","No existe diferencia"],"correct":0},{"question":"¿Puede darse el caso de que además de los extractores, las escopetas superpuestas dispongan de expulsores?","answers":["Todas","Ninguna","Algunos modelos"],"correct":2},{"question":"¿Con qué elementos cuenta un arma para enfilarla hacia un blanco?.","answers":["A través del mecanismo de puntería","Con un buen empuñamiento","Con una buena sujeción del arma"],"correct":0},{"question":"¿Qué elemento del arma regula el desplazamiento en altura de un impacto?.","answers":["El alza","El punto de mira","La longitud del cañón"],"correct":0},{"question":"¿Qué elemento del arma regula el desplazamiento lateral de un impacto?.","answers":["El alza","El punto de mira","La longitud del cañón"],"correct":1},{"question":"¿Qué pieza del mecanismo de disparo transmite el movimiento del disparador?.","answers":["La biela","El elevador","El fiador"],"correct":0},{"question":"En una escopeta semiautomática la expulsión de la vaina percutida se produce:","answers":["Manualmente a voluntad del tirador","Aprovechando la fuerza de retroceso para desplazar el cierre","Como consecuencia de un mecanismo adyacente al cierre"],"correct":1},{"question":"En algunos rifles, ¿qué misión tienen uno o dos orificios situados en la parte anterior del cajón de los mecanismos?","answers":["Liberar la aguja percutora","Ver si hay cartucho en la recámara","Salida de gases en caso de rotura del cartucho"],"correct":2},{"question":"El disparador está protegido por:","answers":["El Guardamano","El Guardamonte","La culata"],"correct":1},{"question":"¿La báscula de una escopeta es considerada por el Reglamento de Armas como pieza fundamental del arma?.","answers":["Si","No","Depende de su estructura"],"correct":0},{"question":"¿El cañón de una escopeta es considerada por el Reglamento de Armas como pieza fundamental del arma?.","answers":["Si","No","Depende de su estructura"],"correct":0},{"question":"La culata de un rifle es considerada por el Reglamento de Armas como pieza fundamental del arma.","answers":["Si","No","Depende de su estructura"],"correct":1},{"question":"¿Los elementos de puntería de una escopeta son considerados piezas fundamentales del arma?.","answers":["Si","No","Viene determinada por la posición de los mismos"],"correct":1},{"question":"¿Cuales son las piezas fundamentales de una escopeta?.","answers":["Culata y cañón","Cierre, cañón y culata","Báscula y cañón"],"correct":2},{"question":"¿Cuales son las piezas fundamentales de un rifle?.","answers":["Cerrojo, cañón y culata","Cerrojo y cañón","Culata cañón y elementos de puntería"],"correct":1},{"question":"¿Para qué sirve el seguro manual?","answers":["Para evitar el disparo, aun estando el arma montada","Para que no se caiga el cargador del arma accidentalmente","Para asegurar el blanco y efectuar un disparo certero"],"correct":0},{"question":"¿Qué pieza golpea el fulminante del cartucho?.","answers":["El tope del cerrojo","El percutor","La uña de extracción"],"correct":1},{"question":"¿Qué avería se puede producir al disparar un arma en vacío?","answers":["Encasquillamiento del cierre","Bloqueo del elevador de cartucho","Rotura de la aguja percutora"],"correct":2},{"question":"El mecanismo de seguridad de un arma, ¿qué misión tiene?.","answers":["Evitar que se produzca un disparo involuntario","Evitar que se cargue el arma","Evitar que se descargue el arma"],"correct":0},{"question":"¿Puede tener seguro automático una escopeta de caza semiautomática?.","answers":["Depende del año de fabricación","Si","Las escopetas semiautomáticas no tienen seguro automático"],"correct":1},{"question":"Si un arma tiene el seguro de mano en posición S, ¿puede efectuar el disparo?.","answers":["Si","No","Si, si está alimentada y montada"],"correct":1},{"question":"¿Cómo se denomina la varilla que se utiliza para limpiar el interior del cañón de las armas?","answers":["Escobilla","Baqueta","Plumero"],"correct":1},{"question":"¿Con qué producto limpiaremos las partes de madera de un arma?","answers":["Con agua y jabón","Con gasolina o gasóleo","Con aceite de linaza"],"correct":2},{"question":"Si se hubiese mojado el arma después de practicar el ejercicio de la caza, ¿cómo procederemos?","answers":["Limpiar y engrasar el arma a la mayor brevedad","No es necesario limpiar el arma","Basta con pasarle un trapo para secarla"],"correct":0},{"question":"¿Dónde guardaremos las armas de la categoría 2ª.2.?","answers":["En el propio domicilio, y en un armero homologado","En la funda dentro de un armario ropero","En cualquier lugar del domicilio"],"correct":0},{"question":"Las armas de la categoría 2ª.2 (armas largas rayadas para caza mayor), ¿en cuál de los siguientes sitios deberán ser guardadas?","answers":["En la caja fuerte de la oficina","En el domicilio fuera de la vista y alcance de los niños","En empresas especializadas en la custodia de armas, debidamente autorizadas"],"correct":2},{"question":"¿Se debe dejar una escopeta en el maletero del vehículo estacionado en la vía pública hasta el día siguiente?","answers":["Sí, siempre que el maletero se encuentre perfectamente cerrado","Sí, siempre que el vehículo esté cerca del domicilio del titular","No, nunca"],"correct":2},{"question":"¿Cómo deberá transportarse un arma de fuego en un vehículo?","answers":["Cargadas","Dispuestas para disparar si nos encontramos en época hábil de caza","Descargadas"],"correct":2},{"question":"¿Cómo se han de guardar las armas?","answers":["Cargadas y dispuestas para su uso","Los rifles separados de las escopetas","Descargadas y sin alimentar"],"correct":2},{"question":"Por lo general, ¿dónde guardaremos las armas?","answers":["Fuera del alcance de cualquier persona y especialmente de los niños","Debajo de la cama","En cualquier parte del domicilio"],"correct":0},{"question":"¿Qué medidas deben adoptarse al manejar un arma?","answers":["Como si estuviera siempre cargada","Con el seguro puesto","Como si estuviera descargada"],"correct":0},{"question":"¿Qué debe comprobarse siempre que se coja un arma?","answers":["Que tenga el seguro puesto","Que está descargada","Que esté limpia"],"correct":1},{"question":"¿Qué lugar puede ser el más adecuado en el domicilio para efectuar la limpieza de las armas?","answers":["Una habitación donde se esté solo","El lugar de reunión de la familia","En la puerta de la calle"],"correct":0},{"question":"¿Qué es lo que nunca debemos hacer cuando desconozcamos el funcionamiento de un arma?","answers":["Desmontarla","Manipularla","Guardarla en su funda"],"correct":1},{"question":"¿Qué es lo que se trata de evitar con el exacto cumplimiento de las normas de seguridad en el manejo de las armas?","answers":["Que se produzcan disparos fortuitos y por tanto causar daños","Ser sancionado por la Autoridad municipal","Que el arma se deteriore"],"correct":0},{"question":"¿Qué precauciones se han de tomar al coger un arma de fuego?","answers":["Cogerla sin poner el dedo en el disparador (gatillo)","Que se encuentre bien engrasada","Comprobar que no está cargada apretando el gatillo"],"correct":0},{"question":"¿Cómo se debe actuar ante la presencia o proximidad de otras personas?","answers":["Con habilidad","Con destreza","Descargando el arma"],"correct":2},{"question":"Cuando cierre su escopeta, ¿a dónde debe dirigir la boca de fuego?","answers":["Hacia arriba","Hacia la horizontal","Hacia el suelo"],"correct":2},{"question":"Al realizar un disparo con un rifle de caza mayor, debemos estar seguros de:","answers":["Visualizar la zona de impacto del proyectil","Que el proyectil seguirá una trayectoria horizontal","Que la carga del cartucho es la adecuada para alcanzar la pieza"],"correct":0}],"TEMA II":[{"question":"La clasificación de un arma dentro de una categoría, se determina en base a:","answers":["Su grado de peligrosidad","Sus características, destino o utilidad y a veces por la licencia que la ampare","Ambas respuestas son correctas"],"correct":2},{"question":"Las ballestas, incluidas en la 7ª categoría, son armas jurídicamente asimiladas a escopetas, ¿sería correcto el documentarlas con licencia D?","answers":["Sí","Documentarlas como de la 3ª.1 categoría","No"],"correct":2},{"question":"Las ballestas, son armas jurídicamente asimiladas a escopetas, ¿es de aplicación el mismo criterio a los arcos?","answers":["No","Solo a los perfeccionados","Sí. Por estar incluidos en la categoría 7ª"],"correct":0},{"question":"¿Qué instrumentos no especificados expresamente, están prohibidos en el Reglamento de Armas?","answers":["Los especialmente peligrosos para la integridad física de las personas","Los que tengan puntas de flecha","Ambas respuestas son verdaderas"],"correct":0},{"question":"Según el Reglamento de Armas, un Arma de fuego corta es:","answers":["Aquella cuyo cañón no exceda de 20 centímetros o cuya longitud total no exceda de 60 centímetros","Aquella cuyo cañón no exceda de 30 centímetros o cuya longitud total no exceda de 60 centímetros","Aquella cuyo cañón no exceda de 30 centímetros o cuya longitud total no exceda de 80 centímetros"],"correct":1},{"question":"Un arma de fuego larga, se define como:","answers":["Cualquier arma de fuego que no sea corta","El arma de más de 30 cm. de longitud total","El arma que no excede su cañón de 30 cm"],"correct":0},{"question":"Un arma cuyo cañón tenga 28 centímetros y una longitud total de 64 centímetros, sería:","answers":["Arma de fuego corta","Arma de fuego larga","Ninguna de las dos"],"correct":1},{"question":"Un revólver con cañón de 35 centímetros, calibre 32 y una longitud total de 40 centímetros, tendría la consideración de:","answers":["Arma de fuego corta","Arma de fuego larga","Ninguna de las dos"],"correct":1},{"question":"Una escopeta, con rayas en el cañón para facilitar el plomeo, aunque esté marcada con punzón de escopeta por un Banco de Pruebas, ¿es un arma de fuego larga rayada para caza mayor?","answers":["Depende de la licencia de armas que la ampara","Sí. Por estar incluida en la categoría 2ª.2","No"],"correct":2},{"question":"Un arma de fuego larga, de ánima lisa, que no es escopeta, ¿podría clasificarse en la 3ª categoría?","answers":["Sí","No, por ser un arma clasificada en la 1ª categoría","Depende del proyectil"],"correct":0},{"question":"Un arma de fuego larga, de ánima lisa, que no es escopeta, ¿podría clasificarse en la 2ª categoría?","answers":["Sí","No, por ser un arma clasificada en la 3ª categoría","Depende del proyectil"],"correct":1},{"question":"Las armas reglamentadas, se clasifican en:","answers":["Siete categorías","Seis categorías","Ocho categorías"],"correct":0},{"question":"¿En qué categoría están incluidas las pistolas semiautomáticas?","answers":["En la 3ª","En la 2ª","En la 1ª"],"correct":2},{"question":"Un arma corta de fuego, de un solo tiro, del calibre 22, ¿en qué categoría está incluida?","answers":["4ª","1ª","6ª"],"correct":1},{"question":"Un revólver, de 20 centímetros de cañón y del calibre 38, ¿a qué categoría pertenece?","answers":["No existe ese tipo de arma","A la 1ª categoría","A la 2ª categoría"],"correct":1},{"question":"¿En qué categoría está clasificada una escopeta de caza, con cañón estriado adaptable, con recámara para cartuchos metálicos?","answers":["En la 1ª categoría","En la 2ª categoría","En la 3ª categoría"],"correct":1},{"question":"Además de las armas de fuego largas rayadas para vigilancia y guardería, ¿qué otras armas están incluidas en la 2ª categoría? (I)","answers":["Las pistolas","Las ballestas","Los cañones estriados adaptables a escopetas de caza con recámara para cartuchos metálicos"],"correct":2},{"question":"Además de las armas de fuego largas rayadas para vigilancia y guardería, ¿qué otras armas están incluidas en la 2ª categoría? (II)","answers":["Las armas de fuego largas rayadas utilizables para caza","Las pistolas","Las ballestas"],"correct":0},{"question":"Los cañones estriados adaptables a escopetas de caza, con recámara para cartuchos metálicos, no clasificados como armas de guerra, ¿en qué categoría están incluidos?","answers":["En la 2ª categoría","En la 3ª categoría","En la 4ª categoría"],"correct":0},{"question":"¿En qué categoría están clasificadas las escopetas?","answers":["Categoría 3ª.1","Categoría 3ª.2","Categoría 2ª.2"],"correct":1},{"question":"¿Cuál de las siguientes armas pertenece a la 2ª categoría? (I)","answers":["Las armas de fuego largas rayadas utilizadas para caza mayor","Las armas de fuego largas para vigilancia y guardería","Las dos anteriores son correctas"],"correct":2},{"question":"¿Cuál de las siguientes armas pertenece a la 3ª categoría?","answers":["Las escopetas","Armas largas rayadas del calibre 5,6 mm para tiro deportivo","Las dos anteriores son correctas"],"correct":2},{"question":"¿Cuál de las siguientes armas pertenece a la 2ª categoría? (II)","answers":["Las escopetas","Las ballestas","Armas largas rayadas"],"correct":2},{"question":"¿A qué categoría pertenecen las armas largas rayadas del calibre 5,6 mm, para tiro deportivo?","answers":["A la 3ª categoría","A la 4ª categoría","A la 5ª categoría"],"correct":0},{"question":"¿Cuál de las siguientes armas pertenece a la 3ª categoría? (II)","answers":["Las escopetas","Los revólveres","Los arcos"],"correct":0},{"question":"Una carabina de aire comprimido, de repetición, que dispara proyectiles cuya energía en la boca de fuego excede de 24,2 julios, ¿en qué categoría está clasificada?","answers":["En la 4ª.1","No está clasificada en ninguna categoría","En la 3ª.3"],"correct":2},{"question":"¿En qué categoría sería incluida un arma larga rayada, del calibre 5,6 mm (.22 americano), de percusión anular, semiautomática, para tiro deportivo?","answers":["3ª categoría","4ª categoría","2ª categoría"],"correct":0},{"question":"Los revólveres de doble acción, accionados por aire u otro gas comprimido, no asimilados a escopetas, ¿en qué categoría están incluidos?","answers":["En la 4ª.1","En la 1ª","En la 3ª.3"],"correct":0},{"question":"Las carabinas de ánima lisa o rayada, de un sólo tiro, accionadas por aire u otro gas comprimido, no asimiladas a escopetas, ¿a qué categoría pertenecen?","answers":["A la 3ª.2","A la 4ª.2","A la 5ª.2"],"correct":1},{"question":"Los revólveres de acción simple, accionados por aire u otro gas comprimido, no asimilados a escopetas, ¿en qué categoría están clasificados?","answers":["En la 3ª.2","En la 4ª.2","En la 5ª.2"],"correct":1},{"question":"Una carabina de aire comprimido, de repetición, que dispara proyectiles cuya energía en la boca de fuego NO excede de 24,2 julios, ¿en qué categoría está clasificada?","answers":["En la 4ª.1","No está clasificada en ninguna categoría","En la 3ª.3"],"correct":0},{"question":"¿En qué categoría están clasificadas las armas blancas, en general?","answers":["En la 5ª","En la 6ª","En la 7ª"],"correct":0},{"question":"Un rifle semiautomático cuyo cargador admite cinco cartuchos, ¿es arma prohibida a particulares?","answers":["No","Sí","Sí, siempre que se utilice para cazar"],"correct":0},{"question":"¿En qué categoría se encuentran clasificadas las ballestas?","answers":["Categoría 5ª.2","Categoría 7ª.2","Categoría 4ª.2"],"correct":1},{"question":"Las armas largas específicas para desempeñar las funciones de guardería, ¿en qué categoría se encuentran clasificadas?","answers":["En la 1ª categoría","En la categoría 2ª.1","En la categoría 2ª.2"],"correct":1},{"question":"¿A qué categoría pertenecen las armas largas de fuego, del calibre 22 americano, de percusión anular, y de repetición para tiro deportivo?","answers":["A la 1ª categoría","A la 2ª categoría","A la 3ª categoría"],"correct":2},{"question":"¿En qué categoría están clasificadas las armas largas rayadas para caza mayor?","answers":["Categoría 3ª.3","Categoría 5ª.2","Categoría 2ª"],"correct":2},{"question":"Un rifle que puede realizar disparos sucesivos al accionar repetidamente el disparador se denomina:","answers":["Automático","Semiautomático","De repetición"],"correct":1},{"question":"Un rifle semiautomático cuyo cargador admite seis cartuchos, ¿es arma prohibida a particulares?","answers":["No","Sí, pues su capacidad de carga supera los cinco cartuchos","Sí, siempre que se utilice para cazar"],"correct":1},{"question":"¿Cuál de las siguientes afirmaciones es cierta?","answers":["Una escopeta calibre 20 mm. pertenece a la categoría 3ª.2","Una escopeta calibre 20 mm. es un arma prohibida","Una escopeta calibre 20 mm. es un arma de guerra"],"correct":2},{"question":"Sobre las armas de guerra, ¿qué está prohibido a los particulares?","answers":["Su adquisición, tenencia y uso","No les están prohibidas","Las dos respuestas son falsas"],"correct":0},{"question":"Las armas de fuego automáticas, son siempre:","answers":["Armas de guerra","Armas de la 1ª categoría","Ambas respuestas son falsas"],"correct":0},{"question":"¿Quién puede legalizar las armas de guerra para un particular?","answers":["No puede legalizarse","Ministro de Defensa","Ministro del Interior"],"correct":0},{"question":"Los calibres 308 win y 7,62x39 son calibres de guerra, ¿qué condiciones deben cumplirse para utilizarlos en caza mayor?","answers":["No se pueden utilizar por ser calibre de guerra","Se podrán utilizar con bala expansiva y rifle de repetición","Se podrán utilizar con autorización especial del Ministerio de Defensa"],"correct":1},{"question":"De las que se citan a continuación, ¿cuáles son armas prohibidas? (I)","answers":["Las armas de fuego con silenciador para no espantar la caza","Los puñales","Las respuestas A y B son armas prohibidas"],"correct":2},{"question":"De las que se citan a continuación, ¿cuáles se consideran armas prohibidas? (II)","answers":["Las armas de fuego resultado de modificar sustancialmente las características de fabricación sin autorización","Armas con culata plegable para facilitar los movimientos del cazador en terrenos abruptos","Las respuestas A y B son armas prohibidas"],"correct":2},{"question":"Las armas de fuego que sean resultado de modificar sustancialmente las características de fabricación u origen sin la reglamentaria autorización, ¿qué clase de armas son?","answers":["Reglamentadas","Prohibidas a particulares","Prohibidas"],"correct":2},{"question":"¿Cuáles de las siguientes armas están prohibidas?","answers":["Las armas de fuego largas con cañones recortados","Los cuchillos de hoja superior a 11 centímetros de longitud","Las cerbatanas"],"correct":0},{"question":"Las armas de fuego, reales o simuladas, combinadas con armas blancas, son:","answers":["Armas prohibidas","Armas reglamentadas","Armas prohibidas a particulares"],"correct":0},{"question":"Un arma de fuego simulada bajo apariencia de cualquier otro objeto, es:","answers":["Un arma prohibida","Un arma prohibida a particulares","Un arma reglamentada"],"correct":0},{"question":"De las armas blancas que se detallan, ¿cuáles están prohibidas? (I)","answers":["Los puñales","Los machetes del Ejército para desollar la caza","Las dos anteriores"],"correct":2},{"question":"¿Se pueden utilizar miras telescópicas en las armas de la categoría 2ª.2?","answers":["Si","No","Está prohibido"],"correct":2},{"question":"¿Se pueden utilizar miras telescópicas en las armas de la categoría 3ª.2?","answers":["Si","No","Está prohibido"],"correct":2},{"question":"Un arma larga que contenga un dispositivo especial, en su culata, para una pistola legalizada, es:","answers":["Un arma prohibida","Un arma combinada","Un arma reglamentada"],"correct":0},{"question":"De las armas blancas que se detallan, ¿cuáles están prohibidas? (II)","answers":["Los puñales","Navajas de hoja inferior a 11 centímetros","Espadas"],"correct":0},{"question":"Un cuchillo de monte, de dos filos, puntiagudo y con una hoja de 20 centímetros, sería:","answers":["Un arma de la 4ª categoría","Un arma blanca permitida","Un arma prohibida"],"correct":1},{"question":"De las que se relacionan, ¿cuáles son armas prohibidas? (III)","answers":["Navajas automáticas","Navajas de menos de 11 centímetros de longitud de hoja","Cuchillos de monte de doble filo con hoja de 13 centímetros"],"correct":0},{"question":"¿Se puede poseer un rompecabezas como instrumento auxiliar en caza mayor?","answers":["Sí","Sí. Con autorización","No, ya que se trata de arma prohibida"],"correct":2},{"question":"¿A qué categoría pertenece un arma de fuego larga rayada, con culata plegable?","answers":["Es un arma prohibida","A la 2ª.2","A la 3ª.2"],"correct":0},{"question":"¿Cuantos silenciadores se pueden tener con un arma larga rayada para caza mayor?","answers":["Uno para cada arma que se posea","Uno solo, independientemente del número de armas que se posea","Ninguno, está prohibido"],"correct":2},{"question":"¿Puede una persona con licencia de armas tener y utilizar armas de fuego largas de cañones recortados?","answers":["No; sólo está permitido a funcionarios especialmente autorizados","Sí. Si dispone de autorización","Sí. Si la utiliza solamente para cazar"],"correct":0},{"question":"Un arma simulada, combinada con un arma blanca, ¿es un arma prohibida?","answers":["No","Sí","Depende del tipo de arma blanca de que se trate"],"correct":1},{"question":"Una escopeta de caza legalmente adquirida en Francia, que posea en su culata un mecanismo para alojar otras armas, ¿puede ser legalizada en nuestro país?","answers":["Si, con autorización francesa","No, por ser un arma prohibida","Si, en todos los casos"],"correct":1},{"question":"Una escopeta de caza legalmente adquirida en Francia, que posea en su culata un mecanismo para alojar una navaja para desollar, ¿puede ser legalizada en nuestro país?","answers":["No, por ser un arma prohibida","Si, con autorización francesa","Si, en todos los casos"],"correct":0},{"question":"De los tipos de cartuchería que se citan, ¿cuál está prohibida a particulares?","answers":["La munición metálica blindada","La cartuchería con bala expansiva","La cartuchería con balas perforantes, explosivas o incendiarias"],"correct":2}],"TEMA III":[{"question":"¿Como se denomina el documento que ampara el traslado, sin licencia ni guía de pertenencia, entre dos lugares, de armas de las categorías 2ª, 3ª y 4ª?","answers":["Guía de circulación","Guía de transporte","Albarán de circulación"],"correct":0},{"question":"Cuando un particular adquiera una escopeta en localidad distinta a la de su residencia, ¿quien expedirá la Guía de Circulación?","answers":["La Intervención de Armas de su residencia","La Intervención de Armas del lugar de la compra","Las dos anteriores pueden ser válidas"],"correct":1},{"question":"¿Es cierto que no es preceptiva la guía de circulación para amparar una escopeta que su titular transportará de una localidad a otra, provisto de guía de pertenencia y licencia correspondiente?","answers":["No en todos los casos","Siempre que el transporte se realice dentro de la provincia","Si"],"correct":2},{"question":"¿Quién expide la Guía de circulación para transportar un arma de fuego de la 3ª categoría?","answers":["El Comandante de Puesto de la Guardia Civil","La Intervención de Armas y Explosivos","El Teniente Coronel Jefe de la Comandancia de la Guardia Civil"],"correct":1},{"question":"¿Por qué es necesario solicitar una guía de circulación cuando se envía a reparar una báscula de escopeta entre dos lugares distintos?","answers":["Por ser una pieza fundamental","No es necesario","Esta prohibido"],"correct":0},{"question":"Cuando se envíe una escopeta sin guía de pertenencia y sin licencia, ¿qué documento amparará el traslado de una localidad a otra?","answers":["La autorización del armero","El permiso del Ayuntamiento","La guía de circulación"],"correct":2},{"question":"¿Qué armas, que se trasladan sin guía de pertenencia y sin licencia, necesitan guía de circulación para ser trasladadas entre dos localidades distintas? (I)","answers":["Las de la 3ª categoría","Las de la 2ª categoría","Las dos anteriores son ciertas"],"correct":2},{"question":"¿Cuándo necesitará guía de circulación una carabina de aire comprimido, que se traslade sin guía de pertenencia y sin licencia?","answers":["En todos los casos","Nunca","Si se trata de una carabina cuya energía cinética del proyectil excede de 24,2 julios"],"correct":2},{"question":"¿Qué armas, que se trasladan sin guía de pertenencia y sin licencia, no necesitan guía de circulación para ser trasladadas entre dos localidades?","answers":["Las escopetas","Las armas de fuego largas rayadas","Las dos anteriores son falsas"],"correct":2},{"question":"¿Qué armas, que se trasladan sin guía de pertenencia y sin licencia, necesitan guía de circulación para su traslado entre dos localidades distintas? (II)","answers":["Las escopetas","Las armas de fuego largas rayadas","Las dos anteriores son ciertas"],"correct":2},{"question":"Además de la guía de circulación, ¿se necesita algún otro documento que acompañe al arma, cuando ésta se envíe a reparar a otra localidad?","answers":["La guía de pertenencia","Autorización escrita por el titular","Ningún otro documento"],"correct":2},{"question":"¿Es cierto que las armas reglamentadas de cualquier categoría y sus piezas fundamentales acabadas circularán en envases debidamente acondicionados para su seguridad durante el traslado?","answers":["Cierto","Falso","Depende del tipo de armas"],"correct":0},{"question":"¿Se pueden enviar a reparar en un mismo envase las escopetas junto con sus municiones?","answers":["Sí, siempre que en el mismo paquete no haya más de 25 armas","Sí, siempre que en el mismo paquete no haya más de tres","No"],"correct":2},{"question":"¿Quién precintará los envases que contengan armas largas de cañón estriado?","answers":["El Servicio Postal de Correos","Intervención de Armas de la Guardia Civil o Armero autorizado","La empresa consignataria"],"correct":1},{"question":"¿Cómo deberán circular las armas reglamentadas de cualquier categoría y sus piezas fundamentales?","answers":["En envases debidamente acondicionados para su seguridad","En su funda y en una caja de cartón","Si va desmontada, es suficiente"],"correct":0},{"question":"Si pretende enviar dos armas de su propiedad a reparar a Éibar, a dos fábricas diferentes, ¿puede hacerlo en un solo envase?","answers":["Sí, puesto que van destinados a la misma localidad","No pueden remitirse en el mismo envase, al corresponder a destinatarios diferentes","Pueden ir en uno o dos paquetes, por estar permitido"],"correct":1},{"question":"¿Se debe enviar un rifle y una escopeta a reparar en un mismo envase?","answers":["Sí, si van destinados al mismo armero","No, puesto que el mismo paquete no puede contener armas de distintas categorías","Sí, puesto que el paquete es adecuado para armas largas"],"correct":1},{"question":"¿Es cierto que en ningún caso podrán hacerse envíos o transportes de armas cargadas ni de armas conjuntamente con cartuchería susceptible de ser utilizada con las armas transportadas?","answers":["No lo preceptúa","En el transporte de algunas armas","Sí es cierto"],"correct":2},{"question":"¿Se puede enviar a reparar una escopeta por Correo?","answers":["No","Cuando vayan desmontadas","Sí, siempre que no se envíe conjuntamente con munición"],"correct":0},{"question":"¿Cuándo se puede enviar a reparar las armas cargadas?","answers":["Sí, si son cortas","Nunca","Con autorización del Interventor de Armas"],"correct":1},{"question":"¿Qué plazo establece el Reglamento de Armas al particular que compra una escopeta en localidad distinta para personarse en la Intervención de Armas y solicitar la Guía de Pertenencia?","answers":["No hay plazo establecido","Diez días","Un día"],"correct":1},{"question":"¿Por qué medio de transporte tiene que ser enviada una escopeta a reparar, si no la lleva su titular personalmente?","answers":["Por giro postal","A través de una empresa de transportes","Por medio de un amigo personal"],"correct":1},{"question":"¿Puede un particular que ha comprado un arma larga rayada, en población distinta de la residencia, transportar dicha arma consigo hasta la Intervención de Armas?","answers":["Sí se puede, siempre que tenga licencia de armas","Sí, siempre que el comprador se halle en posesión de la guía de pertenencia","No"],"correct":2},{"question":"En ningún caso podrán hacerse los envíos de:","answers":["Armas cargadas","Armas con cartuchería correspondiente a las mismas","La a) y la b) son ciertas"],"correct":2},{"question":"Al remitir un arma para reparación u otras causas, ¿Dónde debe figurar la declaración del contenido?","answers":["En la documentación y en el mismo paquete, en caracteres visibles","No debe figurar en ningún sitio visible, por tratarse de armas que deben transportarse con toda reserva","Solamente debe figurar en la documentación (guía de circulación)"],"correct":0},{"question":"¿Cómo debe transportarse un rifle de caza mayor, de nueva adquisición y sin guía de pertenencia, de una localidad a otra donde resida el titular?","answers":["Lo puede llevar el titular personalmente","Por medio de empresa de transporte","Con autorización de la armería"],"correct":1},{"question":"Cuando un particular reciba notificación de que le ha sido enviada a la Intervención de Armas la escopeta que compró, ¿qué deberá hacer?","answers":["Presentarse en la Intervención de Armas con la licencia de caza","Trasladarse a la Intervención de Armas para ver si le gusta y si no devolverla","Presentarse en la Intervención de Armas provisto de la licencia o documento que le autorice su adquisición"],"correct":2},{"question":"Cuando un particular es destinatario de una escopeta enviada a la Intervención de Armas y Explosivos, ¿es cierto que para retirarla debe presentar la licencia o documento que le autorice su adquisición?","answers":["Falso","Cierto","Solo si se trata de escopetas"],"correct":1},{"question":"¿Es cierto que las armas de las categorías 1ª y 2ª y en todo caso las de concurso pasan revista cada tres años?","answers":["Cierto","Falso","Solo en las de 2ª categoría"],"correct":1},{"question":"¿Cada cuántos años pasan revista las armas de la 2ª categoría?","answers":["Dos años","Cinco años","Todos los años"],"correct":1},{"question":"¿Cada cuantos años pasan revista las armas de la 3ª categoría?","answers":["Cinco años","Nunca","Tres años"],"correct":0},{"question":"¿Es necesario presentar el arma para pasar revista?","answers":["Si","No","Alguna vez"],"correct":0},{"question":"El hecho de no pasar dos revistas del arma, ¿es causa de anulación y retirada de la guía de pertenencia?","answers":["No","Si","Depende del valor histórico del arma"],"correct":1},{"question":"¿En qué mes pasará revista el titular de una guía de pertenencia de una escopeta?","answers":["En el mes que se abre la veda de caza","En el mes de abril","En el mes correspondiente a la renovación de la licencia"],"correct":2},{"question":"¿Qué necesita un familiar de un titular de un arma para pasar la revista de las mismas?","answers":["Demostrar la relación de parentesco con el titular del arma","Autorización escrita del titular del arma","Autorización escrita del Delegado del Gobierno de la Comunidad"],"correct":1},{"question":"No pasar dos revistas consecutivas, dará lugar a la anulación y retirada de la Guía de Pertenencia, ¿a qué dará lugar también?","answers":["La pérdida de la propiedad del arma","A la apertura de un expediente sancionador","No poder cazar en el transcurso de un año"],"correct":1},{"question":"¿Quién realizará las anotaciones en las Guías de Pertenencia al pasar la Revista de Armas?","answers":["El propio interesado","El Interventor de Armas","El Jefe de la Comandancia de la Guardia Civil"],"correct":1},{"question":"¿Qué requisito es imprescindible para pasar la Revista de Armas?","answers":["La presentación del Arma","Tiene que ser pasada por el titular del Arma","Las respuestas a) y b) son ciertas"],"correct":0},{"question":"El hecho de no pasar la revista de armas constituye:","answers":["Una infracción Administrativa","Un Delito","Una falta penal"],"correct":0},{"question":"Si tengo una escopeta de caza, ¿cada cuánto tiempo tengo que pasar revista?","answers":["Cada año","Cada tres años","Cada cinco años"],"correct":2},{"question":"¿Cada cuánto tiempo pasarán revista las armas de concurso?","answers":["Cada tres años","Cada cinco años","En cada concurso"],"correct":0},{"question":"¿Cada cuánto tiempo pasarán revista las ballestas?","answers":["Las ballestas no pasan revista, por no ser armas de fuego","Cada tres años","Cada cinco años como las escopetas"],"correct":2},{"question":"¿Puede un tercero pasar revista de una escopeta?","answers":["No, tiene que ser personalmente el titular","Sí, si lo autorizó el titular por escrito","Sí, aprovechando la revista de las suyas, sin más trámite"],"correct":1},{"question":"Una carabina de aire comprimido de la 4ª categoría, ¿cuándo tiene que pasar la revista?","answers":["Cada cinco años","Cada tres años","No tiene que pasar revista"],"correct":2},{"question":"¿En qué circunstancias se puede pasar revista de armas sin presentarla en la Intervención de Armas o Puesto de la Guardia Civil?","answers":["En caso de enfermedad","Cuando sea de nueva adquisición","En ningún caso"],"correct":2},{"question":"Un cañón estriado, y con recámara para cartuchos metálicos, adaptable a una escopeta de caza, pasará revista de armas a los:","answers":["5 años","3 años","No pasa revista"],"correct":0},{"question":"Una carabina de repetición accionada por gas comprimido, no asimilada a escopeta, pasará revista de armas cada:","answers":["3 años","5 años","No necesita pasar revista"],"correct":2},{"question":"Una carabina de aire comprimido, cuyo proyectil en boca tiene una energía superior a los 24,2 julios, ¿ha de pasar revista de armas?","answers":["Si","No","Sólo si se usa para cazar"],"correct":0},{"question":"¿Es cierto que el particular que desee enajenar un arma tiene que hacer la cesión a persona que posea la licencia, tarjeta o certificado de inutilización correspondiente?","answers":["Sí, siempre que sea necesario con arreglo a lo dispuesto en el Reglamento","Puede enajenarse a cualquiera","Las armas de fuego no pueden enajenarse"],"correct":0},{"question":"Al enajenar un particular un arma de fuego, ¿donde entregará la guía de pertenencia?","answers":["Al adquirente","En la Intervención de Armas","En el Ayuntamiento"],"correct":1},{"question":"¿Debe comunicarse a la Intervención de Armas la enajenación de un arma?","answers":["Siempre","Nunca","Únicamente las armas cortas"],"correct":0},{"question":"¿En qué caso no es necesario participar a la Intervención de Armas la enajenación de un arma?","answers":["Se participa siempre","Cuando se enajena a una armería","Cuando se regala a alguien, sin mediar precio"],"correct":0},{"question":"¿Qué requisito es indispensable que tenga el comprador de un arma de fuego?","answers":["Que se halle en posesión de la licencia para el arma que adquiere","Que tenga licencia de caza y seguro del cazador","No es necesario requisito alguno"],"correct":0},{"question":"La enajenación de un arma entre particulares, ¿qué nuevo documento le será expedido al comprador?","answers":["Recibo de compra-venta","Entrega del arma al nuevo titular con su guía de pertenencia","Expedición de nueva guía de pertenencia"],"correct":2},{"question":"La venta de un arma de fuego se efectuará siempre con conocimiento de:","answers":["Comisaría de Policía","Dirección General de la Guardia Civil","Intervención de Armas correspondiente"],"correct":2},{"question":"¿Es cierto que los extranjeros residentes en España podrían prestar sus armas de caza a quienes estén provistos de licencia de caza y de licencia de arma larga rayada para caza mayor o escopetas?","answers":["Cierto","Solo las escopetas","Los extranjeros residentes no pueden prestar sus armas"],"correct":0},{"question":"¿Qué requisitos debe cumplir una persona para que se le pueda ceder el arma?","answers":["Ser propietario de un coto de caza","Poseer la correspondiente licencia de armas","Tener aficiones cinegéticas"],"correct":1},{"question":"¿Por cuánto tiempo se puede prestar las armas para cazar?","answers":["Mientras sea titular de un coto de caza","Un mes","Quince días como máximo"],"correct":2},{"question":"¿Cómo se debe hacer la cesión temporal de las armas?","answers":["Por escrito, fechado y firmado","De palabra","Por teléfono"],"correct":0},{"question":"Un español, ¿a quien podrá prestar su escopeta?","answers":["A quien tenga licencia de caza","No puede prestarla","A quienes estén provistos de la licencia de armas"],"correct":2},{"question":"El titular de un arma larga rayada para caza mayor, ¿a quien podrá prestar dicha arma?","answers":["A nadie","A quienes estén provistos de la licencia de armas","A quien esté provisto de licencia de caza"],"correct":1},{"question":"¿Es cierto que las armas de caza podrán prestarse a quienes estén provistos de licencia de caza y de licencia de armas largas rayadas para caza mayor o escopeta correspondiente?","answers":["Cierto","En ningún caso","Depende de la Comunidad Autónoma"],"correct":0},{"question":"¿Como se prestarán siempre las escopetas?","answers":["Con sus guías de pertenencia","Con la licencia de caza","Con la guía de circulación"],"correct":0},{"question":"¿Como se prestarán siempre las armas de caza?","answers":["Con sus guías de pertenencia","No se pueden prestar","Con sus fundas"],"correct":0},{"question":"¿Se podrán prestar las armas de caza a quien no esté provisto de licencia de caza?","answers":["Sí, si quien la va a utilizar dispone de finca particular para el ejercicio de la caza","No","Si, por no ser requisito fundamental"],"correct":1}],"TEMA IV":[{"question":"¿Un rifle automático puede ampararse en una Licencia de Armas D?","answers":["Sí","No, por ser arma de guerra prohibida a particulares","Sí, si emplea munición de caza"],"correct":1},{"question":"Para la expedición de una licencia de armas, ¿qué edad mínima tendrá el peticionario?","answers":["14 años","16 años","18 años"],"correct":2},{"question":"¿Cuantas licencias de armas D se podrán poseer?","answers":["Dependerá del número de armas que se posean","Una","Dos"],"correct":1},{"question":"¿Que documentos para la utilización de un arma larga rayada para caza mayor, portará su titular cuando ejerza la práctica de la caza?","answers":["Licencia D y guía del arma que utilice","Tarjeta de armas","Solo la guía de pertenencia"],"correct":0},{"question":"¿Se puede expedir una licencia de armas a un español residente en Francia?","answers":["Sí","No","Si, por ser un país de la U.E"],"correct":2},{"question":"¿Podría utilizar un titular de licencia de armas E una escopeta de su propiedad inscrita en un Libro-Registro de coleccionista, para ejercer la caza?","answers":["No, porque está prohibido su uso","Si porque el titular de la licencia y el libro-registro es la misma persona","No porque está prohibida su circulación"],"correct":0},{"question":"¿Qué es necesario en el territorio español para poseer una escopeta de caza?","answers":["Tarjeta de armas","Un permiso de armas","Licencia de armas tipo E"],"correct":2},{"question":"¿Quiénes pueden tener y usar alzas o miras telescópicas?","answers":["Las puede tener y usar cualquiera, pues no se trata de un arma","Necesitan una autorización especial de la Intervención de Armas de la Guardia Civil","Las personas que estén en posesión de licencia de armas tipo D o E"],"correct":2},{"question":"¿Qué edad mínima debe tener una persona para poder poseer un rifle de caza mayor y qué licencia necesita?","answers":["Debe tener como mínimo 18 años y estar en posesión de licencia D","Tener entre 16 y 18 años y estar en posesión de autorización especial de uso de armas para menores","Tener como mínimo 16 años, tener licencia de armas tipo D y que la Intervención de Armas le autorice"],"correct":0},{"question":"En un arma combinada (escopeta y rifle de caza), ¿qué licencia se expedirá a su propietario?","answers":["Dos, una para la escopeta y otra para el rifle","Dos licencias en un modelo de licencia especial","Se expedirá una licencia de armas, teniendo en cuenta el arma más peligrosa"],"correct":2},{"question":"El propietario de una escopeta y un arma larga rayada para caza mayor, ¿qué licencias de armas deberá tener?","answers":["Licencia de armas D y E","Solo licencia D pues ampara un arma de mayor peligrosidad","Licencia de armas D o E, es indiferente"],"correct":0},{"question":"¿Que documento se entrega al Interventor de Armas, por pérdida, destrucción, robo o sustracción de un arma de la categoría 2ª y 3ª?","answers":["Guía de pertenencia","Licencia de armas correspondiente","Tarjeta federativa"],"correct":0},{"question":"¿Que documento podrá solicitarse ante la pérdida, destrucción, robo o sustracción de la licencia de armas?","answers":["Guía de pertenencia","Guía de circulación","Autorización temporal de uso de armas"],"correct":2},{"question":"Cuando las licencias de armas estén próximas a caducar, ¿qué documento podrán expedir los Interventores de Armas a los peticionarios?","answers":["Guía de pertenencia","Guía de circulación","Autorización temporal de uso de armas"],"correct":2},{"question":"¿Qué es una autorización temporal de uso de armas?","answers":["Es una autorización que se otorga a cualquier persona mayor de edad para poder cazar quince días","Es una autorización que se concede a las personas con licencias de armas caducadas para poder cazar","Son autorizaciones que expiden los Interventores de Armas a solicitantes de nueva concesión"],"correct":2},{"question":"Los titulares de licencias de armas próximas a caducar que solicitan su nueva concesión, ¿qué plazo de validez tendrán las autorizaciones temporales?","answers":["Un mes","Dos meses","Tres meses"],"correct":2},{"question":"¿Quien expide la autorización temporal de uso de armas a los titulares de licencias próximas a caducar, cuando éstos solicitan su nueva concesión?","answers":["El Alcalde del Ayuntamiento","El Interventor de Armas y Explosivos","El Armero autorizado"],"correct":1},{"question":"Para la tenencia de armas de la categoría 2ª.2 (armas largas rayadas para caza mayor), ¿con qué documento habrá de estar documentada cada arma?","answers":["Licencia de caza","Con guía de pertenencia","Tarjeta deportiva"],"correct":1},{"question":"Para la tenencia de armas de la categoría 3ª.2 (escopetas y demás armas largas de ánima lisa), ¿con que documento habrá de estar documentada cada arma?","answers":["Licencia de armas D","Guía de circulación","Con guía de pertenencia"],"correct":2},{"question":"Para la tenencia de armas de la categoría 3ª.3 (armas accionadas por aire u otro gas comprimido, energía superior a 24,2 julios), ¿con que documento habrá de estar documentada?","answers":["Con guía de pertenencia","Tarjeta de armas","Guía especial"],"correct":0},{"question":"Para la tenencia de armas de la categoría 7ª.2 (ballestas), ¿con que documento habrá de estar documentada cada arma?","answers":["Tarjeta deportiva","Con guía de pertenencia","Licencia federativa"],"correct":1},{"question":"Para la tenencia de armas de la categoría 7ª.3 (armas para lanzar cabos), ¿con que documento habrá de estar documentada cada arma?","answers":["Certificado de la Comandancia de marina","No es necesario ningún documento","Con guía de pertenencia"],"correct":2},{"question":"¿Cuantas armas irán reseñadas en una guía de pertenencia?","answers":["Una","Dos","Ninguna"],"correct":0},{"question":"¿En que casos acompañará la guía de pertenencia al arma?","answers":["No es necesario","Solo cuando se deposite el arma","En caso de uso, depósito y transporte"],"correct":2},{"question":"Señale, entre las siguientes, el arma exceptuada de estar amparada con guía de pertenencia (I):","answers":["Escopetas","Pistolas","Arcos"],"correct":2},{"question":"Señale, entre las siguientes, el arma exceptuada de estar amparada con guía de pertenencia (II):","answers":["Pistola lanza bengalas","Fúsil lanzacabos","Fúsil de inyección anestésica"],"correct":0},{"question":"¿Cuántas escopetas de caza se pueden legalizar con una sola guía de pertenencia?","answers":["Solamente se puede legalizar una escopeta","El nuevo Reglamento de Armas permite legalizar más de una escopeta si es del mismo titular","Con una guía de varios cuerpos, se pueden legalizar escopetas y rifles a la vez"],"correct":0},{"question":"En una Guía de Pertenencia, además del DNI y datos personales del propietario y de la Licencia, ¿qué otros datos deben figurar?","answers":["El nombre del fabricante","La provincia donde fue fabricada el arma","La reseña completa del arma"],"correct":2},{"question":"Quienes precisen armas utilizables para la caza mayor, ¿qué licencia de armas deberán obtener?","answers":["Licencia de armas D","Licencia de armas E","Licencia de armas F"],"correct":0},{"question":"Para la tenencia de un cañón estriado adaptable a una escopeta de caza, con recámara para cartuchos metálicos, siempre que no esté clasificado como arma de guerra, ¿qué licencia será necesaria?","answers":["Licencia de armas E","Licencia de armas F","Licencia de armas D"],"correct":2},{"question":"¿Que armas ampara la licencia de armas D?","answers":["Fusiles lanzacabos","Escopetas","Armas largas rayadas para caza mayor"],"correct":2},{"question":"¿Que licencia de armas debe obtenerse para llevar y usar armas de fuego largas rayadas para tiro deportivo, calibre 5,6 mm, de percusión anular (Categoría 3ª.1)?","answers":["Licencia de armas D","Licencia de armas C","Licencia de armas E"],"correct":2},{"question":"¿Que licencia de armas debe obtenerse para poseer, llevar y usar ballestas (Categoría 7ª.2)?","answers":["No precisan licencia","Licencia de armas E","Tarjeta deportiva"],"correct":1},{"question":"La Licencia E autoriza a poseer, llevar y usar ¿qué categoría de armas?","answers":["Armas de la categoría 3ª, 7ª.2 y 7ª.3","Armas de la categoría 4ª y 5ª","Armas de la categoría 3ª y 4ª"],"correct":0},{"question":"La licencia de armas E autoriza a poseer, llevar y usar armas de las categorías 3ª, 7ª.2 y 7ª.3, ¿cuantas armas se podrán poseer como máximo?","answers":["Cinco armas largas rayadas","Su número no excederá de 6 escopetas ó 6 armas largas rayadas","Ninguna de las anteriores"],"correct":1},{"question":"¿Hasta cuantas escopetas puede ampararse con una licencia de armas E?","answers":["Cuatro","Cinco","Seis"],"correct":2},{"question":"¿Hasta cuantas armas de fuego largas rayadas para tiro deportivo puede amparar una licencia de armas E?","answers":["Cuatro","Cinco","Seis"],"correct":2},{"question":"¿Cuántas carabinas de aire comprimido se pueden legalizar con una licencia de armas tipo D?","answers":["Cinco, lo mismo que los rifles","Solamente tres","Ninguna, las carabinas de aire o gas comprimido se legalizan con licencia E"],"correct":2},{"question":"¿El titular de armas de fuego cuando viaje con ellas por países de la Unión Europea, deberá ser portador de qué documento?","answers":["De licencia de armas correspondiente al país donde viaje","De Tarjetas de armas correspondiente al país donde viaje","De la Tarjeta Europea de Armas"],"correct":2},{"question":"¿Cual es la vigencia de la Tarjeta Europea de Armas?","answers":["Dos años","Tres años","Cinco años"],"correct":2},{"question":"¿Que armas figurarán en la Tarjeta Europea de Armas?","answers":["Solo armas cortas","Las que lleve o utilice su titular","Armas amparadas con guía especial"],"correct":1},{"question":"El solicitante de licencia E, ¿como acreditará que se dedica al ejercicio de la caza?","answers":["Mediante exhibición de la correspondiente licencia de caza","Justificante del solicitante de pertenecer a una Federación Deportiva","Ninguna de las anteriores"],"correct":0},{"question":"Con la presentación de la licencia de caza en vigor, ¿puede el solicitante de una licencia E acreditar que se dedica al ejercicio de la caza?","answers":["No","Sí","Tendrá que acompañar el justificante de ser socio de un coto de caza"],"correct":1},{"question":"¿A quienes les podrá ser expedida la Tarjeta Europea de Armas?","answers":["A los españoles y extranjeros residentes en España","A los españoles residentes o no en España","A los extranjeros residentes o no en España"],"correct":0},{"question":"En la renovación de la Tarjeta Europea de Armas, ¿qué se exigirá?","answers":["Mantener la titularidad de las armas que ampare","Licencia correspondiente","Certificado de antecedentes penales"],"correct":0},{"question":"¿Que validez tendrán las autorizaciones especiales de uso de armas para menores?","answers":["Cinco años","Tres años","Hasta la mayoría de edad"],"correct":2},{"question":"¿Que edad mínima tendrá un menor para utilizar un arma larga rayada para caza mayor o tiro deportivo?","answers":["14 años","16 años","18 años"],"correct":1},{"question":"¿Que edad mínima tendrá un menor para utilizar armas de las categorías 3ª.2 y 3ª.3?","answers":["14 años","16 años","18 años"],"correct":0},{"question":"¿De quienes irán siempre acompañados los menores cuando utilicen armas de las categorías 2ª.2 o 3ª?","answers":["Personas mayores de edad","Personas mayores de edad con licencia de armas D, E o F","Personas mayores de edad y para cazar"],"correct":1},{"question":"La persona mayor con licencia D, E o F que acompañe a un menor, ¿a qué se habrán comprometido previamente?","answers":["A acompañarlo hasta el lugar de la cacería","A vigilarlo en todo momento y lugar","A acompañarlo y vigilarlo en cada cacería o acto deportivo"],"correct":2},{"question":"Un menor, ¿puede ser titular de una escopeta?","answers":["Sí, si tiene autorización especial de menores","Puede ser titular de una escopeta solamente para cazar","Un menor, no puede ser titular de una escopeta"],"correct":2},{"question":"Indique el plazo de validez de una licencia de armas tipo D expedida a una persona de 55 años.","answers":["Cinco años","Dos años","Tres años"],"correct":0},{"question":"Indique el plazo de validez de una licencia de armas E expedida a una persona de más de 50 y menos de 60 años.","answers":["Una","Tres","Cinco"],"correct":2},{"question":"Un joven de 17 años, ¿cuántas licencias de armas tipo E puede tener?","answers":["Una","Dos, si no tiene licencia de armas tipo D","Ninguna"],"correct":2},{"question":"¿Por quién estarán suscritas las solicitudes de autorizaciones especiales de uso de armas para menores?","answers":["Por el interesado","Por el interesado y por la persona que ejerce la patria potestad o tutela","Por el padre del interesado"],"correct":1},{"question":"Indique el plazo de validez de una licencia de armas tipo E expedida a una persona de 62 años.","answers":["Tres años","Un año","Dos años"],"correct":2},{"question":"Indique el plazo de validez de una licencia de armas tipo D expedida a una persona de 63 años.","answers":["Permanente","Un año","Dos años"],"correct":2},{"question":"Indique el plazo de validez de una licencia de armas tipo E expedida a una persona de 72 años.","answers":["Dos años","Tres años","Un año"],"correct":2},{"question":"Indique el plazo de validez de una licencia de armas tipo D expedida a una persona de 71 años.","answers":["Un año","Dos años","Permanente"],"correct":0},{"question":"¿En que plazo debe resolverse una solicitud de licencia de armas?","answers":["Un mes","Dos meses","Tres meses"],"correct":2},{"question":"Caso de no mantenerse los requisitos que se exigen para el otorgamiento de una licencia de armas, ¿que procede?","answers":["Retirada de todas las armas","Revocar la licencia","Ninguna de las anteriores"],"correct":1},{"question":"Según el Reglamento de Armas, ¿por cuánto tiempo se puede revocar una licencia de armas?","answers":["Por un período máximo de dos años","Por el tiempo que le falte para caducar","Máximo tres años"],"correct":0},{"question":"¿Cuando podrá comprobar la Administración el mantenimiento de los requisitos exigibles para mantener la vigencia de una licencia de armas?","answers":["Cuando lo solicite el titular","En cualquier momento","En los casos de infracción"],"correct":1},{"question":"La vigencia de una licencia de armas estará condicionada a:","answers":["Mantenimiento de los requisitos exigibles en el Reglamento de Armas","No haber cambiado de residencia","No haber llegado a la edad de 65 años"],"correct":0},{"question":"Para obtener licencia para armas largas rayadas para caza mayor o escopetas, ¿en qué consistirán las pruebas de capacitación?","answers":["Conocimiento del Reglamento de caza","Conocimiento de las armas, su cuidado y conservación y sobre seguridad","Conocimiento de las licencias que existen"],"correct":1},{"question":"¿Quien expide la guía de pertenencia de un arma?","answers":["El Delegado del Gobierno","El Interventor de Armas","El Director General de la Guardia Civil"],"correct":1},{"question":"A la solicitud de expedición de licencia de armas tipo D, ¿qué documentos han de unirse?","answers":["Certificado antecedentes penales e informe de aptitudes psicofísicas","Fotocopia del DNI o en su caso tarjeta de autorización de residencia","Todos los reseñados en la A y B"],"correct":2},{"question":"¿Donde se presentarán las solicitudes para la expedición de las licencias de armas?","answers":["En la Intervención de Armas de la Guardia Civil de la localidad de residencia","En la Comisaría de Policía más próxima","En la Alcaldía"],"correct":0},{"question":"¿Que documentos presentará el interesado al solicitar la expedición de licencia E?","answers":["Solamente el certificado de antecedentes penales e informe de aptitud psicofísica","Certificado de antecedentes penales en vigor, Fotocopia del DNI, y otros documentos reglamentarios","Ninguna de las anteriores"],"correct":1},{"question":"¿Cual de los siguientes documentos no será obligatorio para la expedición de la Licencia de Armas tipo E?","answers":["Informe de aptitudes Psicofísicas","Certificado de antecedentes penales","Certificado del Alcalde"],"correct":2}],"TEMA V":[{"question":"En materia de armas, los hechos pueden ser constitutivos de:","answers":["Infracciones penales e infracciones administrativas","Infracciones penales","Infracciones muy graves, graves y leves"],"correct":0},{"question":"En materia de armas, y de las clases de infracciones administrativas. Indicar la proposición correcta.","answers":["Graves, menos graves y leves","Muy Graves, graves y leves","Graves y leves"],"correct":1},{"question":"¿Quién es competente para imponer sanciones al Reglamento de Armas?","answers":["El Delegado del Gobierno y el Director General de la Guardia Civil","El alcalde","Las dos anteriores son correctas"],"correct":2},{"question":"¿Que autoridades son competentes para ordenar la instrucción de un procedimiento sancionador en materia de armas?","answers":["Interventor de Armas y Explosivos","Director general de la Guardia Civil, Delegado del Gobierno","Delegado de Hacienda"],"correct":1},{"question":"¿Cuando prescribirán las infracciones administrativas leves?","answers":["A los 3 meses","Al año","A los 2 años"],"correct":0},{"question":"¿Cuando prescribirán las infracciones administrativas graves?","answers":["A los 3 meses","Al año","A los 2 años"],"correct":1},{"question":"¿Cuando prescribirán las infracciones administrativas muy graves?","answers":["A los 3 meses","Al año","A los 2 años"],"correct":2},{"question":"¿Cuando prescribirán las sanciones leves?","answers":["Al año","A los 2 años","A los 4 años"],"correct":0},{"question":"¿Cuando prescribirán las sanciones graves?","answers":["Al año","A los 2 años","A los 4 años"],"correct":1},{"question":"¿Cuando prescribirán las sanciones muy graves?","answers":["Al año","A los 2 años","A los 4 años"],"correct":2},{"question":"Las sanciones impuestas en materia de armas, ¿cuando serán ejecutivas?","answers":["Cuando las resoluciones adquieran firmeza en vía administrativa","A los diez días de notificar la resolución al interesado","A los 30 días de notificar la resolución al interesado"],"correct":0},{"question":"¿Se pueden imponer sanciones penales y administrativas por un mismo hecho?","answers":["Sí","En ningún caso","Dependerá de la Autoridad Judicial"],"correct":1},{"question":"Si no constituye infracción penal, el almacenamiento sin autorización de un arma larga rayada, ¿de qué infracción administrativa se trata?","answers":["Muy grave","Grave","Leve"],"correct":0},{"question":"Si no constituye infracción penal, el almacenamiento sin autorización de un arma larga de ánima lisa, ¿de qué infracción administrativa se trata?","answers":["Muy grave","Grave","Leve"],"correct":0},{"question":"Si no constituye infracción penal, la insuficiencia de las medidas de seguridad en la fase de almacenamiento de un arma larga rayada, ¿qué infracción administrativa puede constituir?","answers":["Muy grave","Grave","Leve"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento de un arma larga rayada, ¿de qué infracción administrativa se trata?","answers":["Muy grave","Grave","Leve"],"correct":0},{"question":"La tenencia de una escopeta careciendo de guía de pertenencia es una infracción...","answers":["Gravísima","Leve","Ninguna de las anteriores"],"correct":2},{"question":"¿Que sanción pecuniaria puede imponer la autoridad competente por una infracción muy grave al Reglamento de Armas?","answers":["Multa de 5.000.001 a 100.000.000 pesetas","Multa de 50.001 a 500.000 pesetas","Multa de hasta 50.000 pesetas"],"correct":0},{"question":"Si no constituye infracción penal, la reparación sin autorización de una ballesta, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la reparación sin autorización de un arma para lanzar cabos, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el almacenamiento sin autorización de una ballesta, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el almacenamiento sin autorización de un arma para lanzar cabos, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento de un arma cuya tenencia requiera licencia E, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la insuficiencia de las medidas de seguridad en la fase de almacenamiento de armas cuya tenencia requiera licencia E, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de circulación de un arma cuya tenencia requiera licencia E, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la insuficiencia de las medidas de seguridad en la fase de circulación de un arma cuya tenencia requiera licencia E, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la insuficiencia de las medidas de seguridad en la fase de almacenamiento en domicilio de un arma larga rayada, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento en domicilio de un arma larga rayada, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento en el lugar de uso de un arma larga rayada, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la insuficiencia de las medidas de seguridad en la fase de almacenamiento en domicilio de un arma larga de ánima lisa, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento en domicilio de un arma larga de ánima lisa, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la omisión de las medidas de seguridad en la fase de almacenamiento en el lugar de uso de un arma larga de ánima lisa, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el impedimento para que las Autoridades competentes realicen cuantos controles sean necesarios relativos a la tenencia de un arma, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el impedimento para que las Autoridades competentes realicen cuantos controles sean necesarios relativos a la utilización de un arma, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el impedimento para que las Autoridades competentes realicen cuantos controles sean necesarios relativos al almacenamiento de un arma, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la adquisición de armas de la 2ª.2 y 3ª.2 por particulares sin las autorizaciones pertinentes, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la tenencia de armas de la 2ª.2 y 3ª.2 por particulares sin las autorizaciones pertinentes, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la cesión de armas de la 2ª.2 y 3ª.2 por particulares sin las autorizaciones pertinentes, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la enajenación de armas de la 2ª.2 y 3ª.2 por particulares sin las autorizaciones pertinentes, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la alegación de datos falsos para obtener las licencias pertinentes, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el uso de cualquier arma de fuego reglamentaria con omisión de las medidas o precauciones obligatorias para garantizar la seguridad, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, el uso de cualquier arma de fuego reglamentaria con insuficiencia de las medidas o precauciones obligatorias para garantizar la seguridad, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, portar armas de cualquier clase en establecimientos públicos salvo que estuvieren habilitados, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, portar armas de cualquier clase en lugares de reunión salvo que estuvieren habilitados, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, portar armas de cualquier clase en lugares de concentración salvo que estuvieren habilitados, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, portar armas de cualquier clase en lugar de recreo salvo que estuviere habilitado, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, portar armas de cualquier clase en lugar de esparcimiento salvo que estuviere habilitado, ¿de qué infracción administrativa se trata?","answers":["Grave","Leve","Muy grave"],"correct":0},{"question":"¿Qué tipo de infracción constituye la tenencia de un arma larga rayada de la categoría 2ª.2 en el domicilio careciendo de armero o caja fuerte para su custodia?","answers":["Infracción Leve","Infracción Muy Grave","Infracción Grave"],"correct":2},{"question":"La tenencia de una escopeta con la Licencia caducada hace tan sólo 20 días constituye una infracción...","answers":["Grave","Leve porque es poco tiempo desde que ha caducado","No es ninguna infracción"],"correct":0},{"question":"La alegación de un domicilio en el que no resido para documentar una escopeta, es una falta...","answers":["Leve","No es ninguna infracción","Grave"],"correct":2},{"question":"La negativa a presentar un rifle y sus documentos a un Policía Nacional cuando nos lo requiere, es una infracción...","answers":["Muy Grave","No es ninguna infracción puesto que sólo las debo presentar a la Guardia Civil","Grave"],"correct":2},{"question":"¿Qué sanción pecuniaria puede imponer la autoridad competente por una infracción grave al Reglamento de Armas?","answers":["Multa de 5.000.001 a 100.000.000 pesetas","Multa de 50.001 a 5.000.000 pesetas","Multa de hasta 50.000 pesetas"],"correct":1},{"question":"Si no constituye infracción penal, la adquisición de ballestas por particulares sin las autorizaciones pertinentes, ¿de que infracción administrativa se trata?","answers":["Muy grave","Grave","Leve"],"correct":2},{"question":"Si no constituye infracción penal, la tenencia de ballestas por particulares sin las autorizaciones pertinentes, ¿de que infracción administrativa se trata?","answers":["Leve","Grave","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la cesión de ballestas por particulares sin las autorizaciones pertinentes, ¿de que infracción administrativa se trata?","answers":["Leve","Grave","Muy grave"],"correct":0},{"question":"Si no constituye infracción penal, la enajenación de ballestas por particulares sin las autorizaciones pertinentes, ¿de que infracción administrativa se trata?","answers":["Muy grave","Leve","Grave"],"correct":1},{"question":"Si no constituye infracción penal, el incumplimiento de dar cuenta a la Guardia Civil de la destrucción de la documentación de un arma, ¿de qué infracción administrativa se trata?","answers":["Leve","Muy grave","Grave"],"correct":0},{"question":"Si no constituye infracción penal, el incumplimiento de dar cuenta a la Guardia Civil de la pérdida de la documentación de un arma, ¿de qué infracción administrativa se trata?","answers":["Leve","Muy grave","Grave"],"correct":0},{"question":"Si no constituye infracción penal, el incumplimiento de dar cuenta a la Guardia Civil de la sustracción de la documentación de un arma, ¿de qué infracción administrativa se trata?","answers":["Leve","Muy grave","Grave"],"correct":0},{"question":"Si no constituye infracción penal, el incumplimiento de realizar las declaraciones obligatorias, ¿de qué infracción administrativa se trata?","answers":["Leve","Muy grave","Grave"],"correct":0},{"question":"La omisión de las revistas constituye una infracción...","answers":["Grave","Leve","Muy Grave"],"correct":1},{"question":"¿Que sanción pecuniaria puede imponer la autoridad competente por una infracción leve al Reglamento de Armas?","answers":["Multa de 500.001 a 1.000.000 pesetas","Multa de 50.001 a 500.000 pesetas","Multa de hasta 50.000 pesetas"],"correct":2},{"question":"¿Que implica la retirada de las armas?","answers":["La desposesión de las mismas y la prohibición de la adquisición y tenencia de otras","El depósito del arma para subastarla","No hacer uso del arma durante un tiempo"],"correct":0},{"question":"Señale la opción correcta de las siguientes propuestas:","answers":["Es lícito llevar o usar armas en una manifestación de personas por motivos de seguridad","Puedo adquirir una escopeta de caza para poder defenderme en una casa de campo","Se considera ilícito el hecho de llevar o usar armas los concurrentes a establecimientos públicos o lugares de reunión"],"correct":2},{"question":"Tengo una escopeta de caza y decido recortar en mi casa la longitud de los cañones en diez centímetros para que se abra mejor el tiro, ¿puedo hacerlo?","answers":["No","Sí, con autorización del Delegado del Gobierno","Sí puedo porque diez centímetros de cañón es muy poco"],"correct":0}],"TEMA VI":[{"question":"¿Es cierto que el Reglamento de Armas contempla que la reparación de armas de fuego se hará solamente por industrias que las hubiesen fabricado o por armeros autorizados por la Intervención de Armas de la Guardia Civil, con establecimientos abiertos e inscritos en un registro?","answers":["Cierto","Falso","Es indiferente"],"correct":0},{"question":"¿Que documento será aportado al armero, cuando se le entregue un arma de fuego para reparación?","answers":["La Licencia o Autorización de armas","La Guía de Pertenencia o la Guía de Circulación en su caso","La Guía de Pertenencia y la Licencia de Armas"],"correct":1},{"question":"¿Que destino se le dará a la Guía de pertenencia de un arma de fuego que ha sido reparada?","answers":["Se devolverá al propietario del arma","Se hará una nueva guía haciendo constar que ha sido reparada","Se destruirá"],"correct":0},{"question":"¿Puede llevar un arma de fuego personalmente el titular de la misma para su reparación?","answers":["No","Algunas veces","Sí"],"correct":2},{"question":"Cuando el arma a reparar proceda de una localidad distinta a la de ubicación del establecimiento del armero y no la lleva personalmente su propietario, ¿que documento deberá sustituir a la Guía de Pertenencia?","answers":["Tan solo una nota con las deficiencias que tiene el arma","Una guía de circulación expedida por la Intervención de Armas","Si la lleva personalmente el propietario, necesita igualmente guía de circulación"],"correct":1},{"question":"¿Que requisito será imprescindible para poder reparar armas de fuego?","answers":["Ser un técnico en la reparación de armas y realizarlo de forma habitual","Tener la condición de armero y establecimiento abierto e inscrito en el registro","Ser titular de una armería debidamente autorizada por la Autoridad Gubernativa"],"correct":1},{"question":"¿Es imprescindible obtener la condición de armero para dedicarse a la reparación de armas de fuego?","answers":["Algunas veces","Sí","Cuando se trate de armas blancas sí es necesario"],"correct":1},{"question":"¿Las industrias que fabrican armas de fuego están autorizadas a reparar las mismas?","answers":["No, si la avería es muy grave","Sí","Depende del tipo de arma"],"correct":1},{"question":"¿Se admitirá un arma de fuego para su reparación si no lleva la Guía de pertenencia?","answers":["Sí, cuando esté en muy mal estado","No, en ningún caso","Sí, siempre que dicho documento se haya sustituido por una guía de circulación"],"correct":2},{"question":"¿Puede el titular de un arma de fuego llevarla personalmente a un establecimiento autorizado para su reparación?","answers":["No","Sí, si va acompañada de la Guía de Pertenencia","Sí, si va acompañada de la Guía de Pertenencia y Licencia de Armas"],"correct":2},{"question":"La reparación de armas se hará solamente por:","answers":["Por las industrias que las hubiesen fabricado","Por armeros, autorizados por la Intervención de Armas, con establecimiento abierto al público e inscritos en el registro","Las dos respuestas anteriores son válidas"],"correct":2},{"question":"No se admitirá un arma a reparar si no va acompañada de:","answers":["Guía de Pertenencia","Guía de Circulación","La A) y la B) son correctas"],"correct":2},{"question":"¿Donde quedará la Guía de Pertenencia del arma que se esté reparando?","answers":["Será devuelta al propietario del arma una vez se tomen los datos","Quedará en poder del armero mientras dure la reparación del arma","No es necesario, en este caso, que el arma vaya acompañada por la Guía de Pertenencia"],"correct":1},{"question":"¿Cuando deberá ser entregada a su titular la guía de pertenencia de un arma llevada a reparar a una armería?","answers":["Una vez presentada el arma en la armería","Una vez que el Armero ha tomado nota de la misma","En el momento de retirar el arma de la armería"],"correct":2},{"question":"Además del arma, ¿qué entregará al armero el titular que le deje su arma para reparar?","answers":["La Guía de Pertenencia","La licencia de armas","No es preciso que le entregue nada"],"correct":0},{"question":"Sin conocimiento de la Intervención de Armas y Explosivos de la Guardia Civil, ¿en qué casos está permitida la reparación que suponga modificación de las características, estructura o calibre de un arma de caza?","answers":["En cualquier caso","En ningún caso","Es indiferente"],"correct":1},{"question":"¿Puede llevarse a cabo una reparación que suponga modificación del calibre de un arma?","answers":["Sí, si es de caza y esté aprobado por un banco oficial de pruebas y notificado a la Intervención de Armas","Sí, siempre que las variaciones hayan sido realizadas por los propios fabricantes del arma con documentación técnica en la Intervención de Armas","Son correctas las dos respuestas anteriores"],"correct":2},{"question":"¿En que casos se permitirá que la reparación del arma suponga la modificación sustancial de sus características?","answers":["Con conocimiento del Ministerio de Cultura","Con conocimiento de la Intervención de Armas y aprobación del Ministerio de Defensa si es arma de guerra","Con conocimiento de la Intervención de Armas y Ministerio de Hacienda"],"correct":1},{"question":"¿Para modificar el calibre de un arma es preciso la aprobación en su caso del Ministerio de Defensa?","answers":["Sí, siempre que se trate de armas de la 1ª y 2ª categoría","Sí, siempre que se trate de armas de guerra","Las dos respuestas son correctas"],"correct":1},{"question":"¿Puede cambiarse la estructura de un arma?","answers":["Sí, siempre que lo haga un armero autorizado y por un motivo razonado","Sí, previo conocimiento de la Intervención de Armas de la Guardia Civil","En ningún caso"],"correct":1},{"question":"¿Puede repararse un arma de caza de tal forma que suponga una modificación sustancial de la misma?","answers":["Sí, con conocimiento y aprobación de los organismos competentes","Nunca","Solo en caso de que la reparación fuera efectuada por un herrero"],"correct":0},{"question":"Los fabricantes y comerciantes autorizados y sus representantes, ¿a quienes podrán dejar a prueba las armas de fuego?","answers":["A personas mayores de edad","A personas que posean la correspondiente licencia","A personas interesadas en la compra de las armas"],"correct":1},{"question":"¿Quienes podrán dejar a prueba las armas de fuego?","answers":["Los fabricantes y comerciantes autorizados","Los representantes de los fabricantes y comerciantes autorizados","Las dos anteriores son correctas"],"correct":2},{"question":"Los comerciantes autorizados, ¿dejarán a probar un arma de fuego una persona sin Licencia de Armas?","answers":["Sí","No deben","Sí, con autorización del Armero"],"correct":1},{"question":"¿Que plazo de validez tendrá el documento expedido por un comerciante autorizado para probar un arma de fuego en localidad distinta a la del interesado?","answers":["20 días","10 días","1 día"],"correct":1},{"question":"¿Que plazo de validez tendrá el documento expedido por un comerciante autorizado para probar un arma de fuego en la misma localidad de residencia del interesado?","answers":["24 horas","5 días","7 días"],"correct":1},{"question":"En el documento que expida un fabricante a favor de la persona interesada en adquirir un arma de fuego, ¿podrá omitir el lugar donde se va a efectuar la prueba?","answers":["Siempre","No","No tiene importancia"],"correct":1},{"question":"¿Cualquier titular de la licencia de armas correspondiente y en vigor, podrá probar las armas de fuego que desea adquirir?","answers":["Sí","Nunca","Con autorización del Subdelegado del Gobierno"],"correct":0},{"question":"La persona interesada en comprar un arma, ¿puede probarla antes de adquirirla en galería autorizada?","answers":["No, en ningún caso","Sí, pero debe probarla tan solo el viajante","Sí"],"correct":2},{"question":"Una persona que posee licencia de armas correspondiente, ¿puede probar un arma de caza?","answers":["Si, en caso de que se la deje un comerciante autorizado","Solo en caso de que sea titular de una licencia de caza","Las dos anteriores son correctas"],"correct":0},{"question":"¿Que será indispensable para que una persona interesada en adquirir un arma pueda probarla?","answers":["Que le acompañe el comercial o fabricante","Que tenga una autorización del vendedor","Estar en posesión de la correspondiente licencia"],"correct":2},{"question":"¿Que datos deberá contener el documento de carácter personal e intransferible que emite el fabricante o comerciante a la persona que vaya a realizar la prueba?","answers":["Denominación expresa del lugar en donde se deben realizar las pruebas","Reseña del arma, la licencia y el lugar de las pruebas, plazos de validez","Que se reseñe un plazo de tres días para realizar la prueba"],"correct":1},{"question":"¿Que carácter tiene el documento que el fabricante o comerciante expide a favor de la persona interesada en adquirir un arma de fuego que quiere probar?","answers":["Genérico, para cualquier posible adquirente","Transferible a un tercer posible adquirente, siempre que posea licencia de armas","Personal e intransferible"],"correct":2},{"question":"Un fabricante autorizado ha dejado en prueba un arma a un particular que desea adquirirla y que posee la licencia correspondiente, ¿qué le debe expedir el fabricante?","answers":["La guía de pertenencia","La factura del arma","Un documento de carácter personal e intransferible visado por la Intervención de Armas"],"correct":2},{"question":"¿Por quién será visado el documento de autorización para la prueba de un arma de fuego expedido a favor de un particular por un fabricante autorizado?","answers":["Intervención de Armas","Comerciante","No es necesario este requisito"],"correct":0},{"question":"El documento de autorización para la prueba de un arma de fuego, ¿en qué modelo de documento se formalizará?","answers":["En triplicado ejemplar","Por escrito","Conforme a un modelo oficial"],"correct":2},{"question":"¿Donde se podrán probar las armas de fuego, además de en los campos de las Federaciones deportivas o en los polígonos, campos o galerías de tiro?","answers":["En los terrenos privados","En los terrenos que cuenten con autorización de la autoridad local","En los terrenos cinegéticos controlados"],"correct":2},{"question":"¿Se podrán probar las armas de fuego en Galerías de Tiro?","answers":["No","No, si no se tiene autorización del Alcalde","Sí"],"correct":2},{"question":"¿Se podrá probar un arma de fuego en la vía pública?","answers":["Solo en caso de que no haya personas en la misma","Si es de noche y en descampado","Nunca"],"correct":2},{"question":"Con motivo del fallecimiento de una persona que posea armas de fuego, los herederos o albaceas, ¿cuando deberán depositar las armas en la Intervención de Armas?","answers":["Al día siguiente del fallecimiento","Tan pronto como tengan conocimiento de la obligación de hacerlo","Será determinado por el Interventor de Armas y Explosivos de la residencia del fallecido"],"correct":1},{"question":"¿Es cierto que el Reglamento de Armas dispone que al cesar en la habilitación para la tenencia legal de las armas, el interesado deberá depositarlas inmediatamente?","answers":["Cierto","Falso","Solo en caso de armas de caza"],"correct":0},{"question":"Al cesar en la habilitación para la tenencia legal de las armas, ¿en que momento el interesado deberá depositar las armas con las correspondientes guías de pertenencia?","answers":["Dentro del plazo de 10 días desde que cesó en dicha habilitación","Inmediatamente","Quedará exento del depósito si comunica tal vicisitud a la Intervención de Armas"],"correct":1},{"question":"No pasar dos revistas consecutivas de un arma será motivo de retirada de la guía de pertenencia, ¿qué debe hacerse con el arma?","answers":["Guardarla con las suficientes medidas de seguridad","Depositarla","Llevar la guía de pertenencia a la Intervención de Armas"],"correct":1},{"question":"¿Que tiempo permanecerán las armas que se depositen en las Intervenciones de Armas a disposición de los herederos, como consecuencia del fallecimiento de sus titulares?","answers":["6 meses","1 año","2 años"],"correct":1},{"question":"¿Que documento acompañará a las armas que se depositen en las Intervenciones de Armas, como consecuencia del fallecimiento de sus titulares?","answers":["La Licencia de armas del fallecido y el certificado de defunción","La guía de pertenencia","La guía de pertenencia, acompañada de certificado de defunción"],"correct":2},{"question":"En caso de caducidad de la licencia de armas, ¿qué tiempo tendrá para depositarlas?","answers":["3 meses","1 año","Inmediatamente"],"correct":2},{"question":"¿Que documentos acompañarán a las armas de fuego que vayan a ser depositadas?","answers":["Las Guías de Pertenencia","La Licencia de Armas","Las Tarjetas de Armas"],"correct":0},{"question":"¿Que deberá depositar el titular de armas de fuego que extraviase la licencia de armas?","answers":["Las Armas y las Guías de Pertenencia","Las Guías","No depositará ningún arma"],"correct":0},{"question":"¿Que deberá depositar el titular de armas de fuego que extraviase las Guías de Pertenencia?","answers":["La Licencia de Armas","Las Armas que amparan dichas Guías","Licencia de caza"],"correct":2},{"question":"¿Es cierto que el titular de un arma de fuego no puede depositarla en la Intervención de Armas y Explosivos para ser subastada?","answers":["Cierto","Falso","Depende de si el arma es de caza o no"],"correct":1},{"question":"¿Puede el titular de un arma de fuego depositarla en la Intervención de Armas y Explosivos para ser subastada?","answers":["No","A veces","Sí"],"correct":2},{"question":"¿Puede el titular de un arma de fuego depositarla en la Intervención de Armas y Explosivos para su reducción a chatarra?","answers":["No; el destino reglamentario de reducción a chatarra es solo en caso de armas depositadas que carezcan de punzones o sean prohibidas","A veces","Sí"],"correct":2},{"question":"¿Cuando procede el depósito de las armas y la retirada y anulación de la guía de pertenencia?","answers":["Al no pasar la revista, en una ocasión","Al no pasar dos revistas consecutivas","En ningún caso procede el depósito de las armas"],"correct":1},{"question":"En caso de fallecimiento del titular de un arma, ¿qué deberán hacer los familiares con las armas del fallecido?","answers":["Depositarlas en la Intervención de Armas","Pueden hacer uso de las mismas sin ningún requisito previo","Pasarán a propiedad del hijo mayor de la familia"],"correct":0},{"question":"¿Qué plazo tienen los herederos de un arma, depositada en la Intervención de Armas y Explosivos por fallecimiento del titular, para enajenarla?","answers":["Una semana","Un año","No hay plazo establecido"],"correct":1},{"question":"En caso de anulación de la guía de pertenencia de un arma, ¿qué debe hacerse con el arma?","answers":["Depositarla inmediatamente en la Intervención de Armas","Esperar a que me devuelvan la guía","Nada"],"correct":0},{"question":"Señale el plazo de que disponen los herederos del titular de una escopeta para depositarla en la Intervención de Armas en caso de fallecimiento del titular (I):","answers":["Tan pronto como tenga conocimiento de la obligación de hacerlo","Dentro de los seis meses siguientes al fallecimiento","Correctas A) y B)"],"correct":2},{"question":"Señale el plazo de que disponen los herederos del titular de una escopeta para depositarla en la Intervención de Armas en caso de fallecimiento del titular (II):","answers":["Dentro de los seis meses siguientes al fallecimiento","Al año del fallecimiento","Las dos anteriores son correctas"],"correct":0},{"question":"Una vez haya sido enajenada en pública subasta un arma depositada, el importe obtenido por la misma, ¿A quién se entregará?","answers":["A su titular o herederos","A una Institución que tenga unos fines benéficos","Ambas respuestas son correctas"],"correct":0},{"question":"Una escopeta depositada por infracción a la Ley de Caza, ¿podrá ser recuperada por su dueño?","answers":["Sí","No","Algunas veces"],"correct":0},{"question":"¿Que destino se le dará a las armas depositadas por infracción a la Ley de Caza, cuando los titulares no deseen recuperarlas?","answers":["Venderlas","Transferirlas","Subastarlas"],"correct":2},{"question":"¿Que destino recibirán las armas depositadas a disposición de los herederos cuando haya transcurrido el plazo reglamentario sin que las armas hayan sido enajenadas o recuperadas?","answers":["Se reducirán a chatarra, si no se ha pedido expresamente que se subasten","Se enajenaran en pública subasta","Se enajenarán a los armeros que lo soliciten"],"correct":1},{"question":"¿Qué fin se le dará a un arma depositada en la Intervención de Armas que transcurridos los plazos reglamentarios no ha sido transferida?","answers":["Se entregará al museo de armas del Ejército","Se enajenará en pública subasta","Se alquilará a persona en posesión de licencia de armas"],"correct":1},{"question":"En las importaciones, las armas llegadas a un aeropuerto que no fuesen retiradas por sus destinatarios después de despachadas por las aduanas, ¿cuanto tiempo estarán depositadas como máximo?","answers":["Durante un año","Durante seis meses","Durante cinco meses"],"correct":0},{"question":"En las importaciones, las armas llegadas a un aeropuerto que no fuesen retiradas por sus destinatarios después de despachadas por las aduanas, ¿que fin le será dado a dichas armas?","answers":["Se venderán","Serán devueltas al país de origen","Serán depositadas en la Intervención de Armas y Explosivos"],"correct":2}]};
+
+const THEME_NAMES = {
+  'TEMA I': 'Funcionamiento de las Armas',
+  'TEMA II': 'Clasificación y Categorías',
+  'TEMA III': 'Circulación y Documentación',
+  'TEMA IV': 'Licencias y Permisos',
+  'TEMA V': 'Infracciones y Sanciones',
+  'TEMA VI': 'Reparación y Depósito'
+};
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+let currentMode = null;
+let currentTema = null;
+let sessionQuestions = [];
+let currentQIndex = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let sessionResults = [];
+let timerInterval = null;
+let timerSeconds = 0;
+let totalTimerSeconds = 0;
+let timeExpired = false;
+let temaPools = {};
+
+// ════════════════════════════════════════════════════════════
+// STORAGE
+// ════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'hunting_claude_stats_v1';
+
+function loadStats() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return {
+    practice: { totalSessions: 0, totalCorrect: 0, totalAnswered: 0, byTheme: {} },
+    exam: { totalAttempts: 0, totalPassed: 0, history: [] }
+  };
+}
+
+function saveStats(stats) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stats)); } catch(e) {}
+}
+
+function resetStats() {
+  saveStats({
+    practice: { totalSessions: 0, totalCorrect: 0, totalAnswered: 0, byTheme: {} },
+    exam: { totalAttempts: 0, totalPassed: 0, history: [] }
+  });
+  temaPools = {};
+  renderThemeList();
+  renderStats();
+}
+
+// ════════════════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  stopTimer();
+  showScreen('screen-home');
+  renderThemeList();
+}
+
+function showStats() {
+  renderStats();
+  showScreen('screen-stats');
+}
+
+function showReview() {
+  renderReview();
+  showScreen('screen-review');
+}
+
+// ════════════════════════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════════════════════════
+function renderThemeList() {
+  const stats = loadStats();
+  const list = document.getElementById('theme-list');
+  list.innerHTML = Object.keys(QUESTIONS_DATA).map((tema, i) => {
+    const total = QUESTIONS_DATA[tema].length;
+    const ts = stats.practice.byTheme[tema] || { correct: 0, answered: 0 };
+    const pct = ts.answered > 0 ? Math.round(ts.correct / ts.answered * 100) : 0;
+    return `
+      <div class="theme-item" onclick="startPractice('${tema}')">
+        <div class="theme-item-left">
+          <div class="theme-num">${i + 1}</div>
+          <div class="theme-info">
+            <div class="theme-name">${THEME_NAMES[tema]}</div>
+            <div class="theme-count">${total} preguntas · ${ts.answered > 0 ? pct + '% acierto' : 'Sin intentar'}</div>
+            <div class="theme-progress-bar">
+              <div class="theme-progress-fill" style="width:${pct}%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="theme-arrow">›</div>
+      </div>`;
+  }).join('');
+}
+
+function showPracticeMenu() {
+  document.getElementById('theme-list').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ════════════════════════════════════════════════════════════
+// PRACTICE
+// ════════════════════════════════════════════════════════════
+function startPractice(tema) {
+  currentMode = 'practice';
+  currentTema = tema;
+  if (!temaPools[tema] || temaPools[tema].length < 20) {
+    temaPools[tema] = shuffle([...Array(QUESTIONS_DATA[tema].length).keys()]);
+  }
+  const indices = temaPools[tema].splice(0, 20);
+  sessionQuestions = indices.map(idx => ({ ...QUESTIONS_DATA[tema][idx], originalIdx: idx }));
+  startQuiz();
+}
+
+// ════════════════════════════════════════════════════════════
+// EXAM
+// ════════════════════════════════════════════════════════════
+function startExam() {
+  currentMode = 'exam';
+  currentTema = null;
+  const all = [];
+  Object.keys(QUESTIONS_DATA).forEach(tema => {
+    QUESTIONS_DATA[tema].forEach((q, i) => all.push({ ...q, tema }));
+  });
+  sessionQuestions = shuffle(all).slice(0, 20);
+  startQuiz();
+}
+
+// ════════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ════════════════════════════════════════════════════════════
+function startQuiz() {
+  currentQIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  sessionResults = [];
+  timeExpired = false;
+
+  const badge = document.getElementById('quiz-mode-badge');
+  const topicLabel = document.getElementById('quiz-topic-label');
+  const timerBar = document.getElementById('timer-bar');
+  const timeUpBanner = document.getElementById('time-up-banner');
+
+  if (currentMode === 'practice') {
+    badge.className = 'quiz-mode-badge practice';
+    badge.textContent = 'PRÁCTICA';
+    topicLabel.textContent = currentTema || '';
+    timerBar.style.display = 'none';
+    timeUpBanner.style.display = 'none';
+  } else {
+    badge.className = 'quiz-mode-badge exam';
+    badge.textContent = 'EXAMEN';
+    topicLabel.textContent = 'TODOS LOS TEMAS';
+    timerBar.style.display = 'flex';
+    timeUpBanner.style.display = 'none';
+    startTimer(20 * 60);
+  }
+
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = sessionQuestions[currentQIndex];
+  const total = sessionQuestions.length;
+
+  document.getElementById('question-num').textContent = `PREGUNTA ${currentQIndex + 1}`;
+  document.getElementById('question-text').textContent = q.question;
+  document.getElementById('progress-text').textContent = `Pregunta ${currentQIndex + 1} de ${total}`;
+  document.getElementById('progress-score').textContent = `✓ ${correctCount} · ✗ ${wrongCount}`;
+  document.getElementById('progress-fill').style.width = `${(currentQIndex / total) * 100}%`;
+
+  const list = document.getElementById('answers-list');
+  list.innerHTML = q.answers.map((ans, i) => `
+    <button class="answer-btn" onclick="selectAnswer(${i})" id="ans-${i}">
+      <div class="answer-letter">${'ABC'[i]}</div>
+      <div class="answer-text">${ans}</div>
+    </button>`).join('');
+
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('next-btn').className = 'next-btn';
+}
+
+function selectAnswer(selectedIdx) {
+  if (timeExpired) return;
+  const q = sessionQuestions[currentQIndex];
+  const correct = q.correct;
+  const isCorrect = selectedIdx === correct;
+
+  document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
+  document.getElementById(`ans-${correct}`).classList.add('correct');
+  if (!isCorrect) document.getElementById(`ans-${selectedIdx}`).classList.add('wrong');
+
+  const fb = document.getElementById('feedback-box');
+  const fbTitle = document.getElementById('feedback-title');
+  const fbCorrect = document.getElementById('feedback-correct');
+  const fbIcon = document.getElementById('feedback-icon');
+
+  if (isCorrect) {
+    correctCount++;
+    fbIcon.textContent = '✅';
+    fbTitle.textContent = '¡Correcto!';
+    fbTitle.className = 'feedback-title correct';
+    fbCorrect.innerHTML = '';
+  } else {
+    wrongCount++;
+    fbIcon.textContent = '❌';
+    fbTitle.textContent = 'Incorrecto';
+    fbTitle.className = 'feedback-title wrong';
+    fbCorrect.innerHTML = `La respuesta correcta es: <strong>${q.answers[correct]}</strong>`;
+  }
+
+  fb.className = 'feedback-box show';
+  document.getElementById('next-btn').className = 'next-btn show';
+  document.getElementById('progress-score').textContent = `✓ ${correctCount} · ✗ ${wrongCount}`;
+
+  sessionResults.push({
+    question: q.question,
+    answers: q.answers,
+    correct,
+    selected: selectedIdx,
+    isCorrect,
+    tema: q.tema || currentTema
+  });
+}
+
+function nextQuestion() {
+  currentQIndex++;
+  if (currentQIndex >= sessionQuestions.length) {
+    finishQuiz(false);
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishQuiz(fromTimer) {
+  stopTimer();
+  const stats = loadStats();
+
+  if (currentMode === 'practice') {
+    stats.practice.totalSessions++;
+    stats.practice.totalCorrect += correctCount;
+    stats.practice.totalAnswered += sessionResults.length;
+    const tema = currentTema;
+    if (!stats.practice.byTheme[tema]) stats.practice.byTheme[tema] = { correct: 0, answered: 0 };
+    stats.practice.byTheme[tema].correct += correctCount;
+    stats.practice.byTheme[tema].answered += sessionResults.length;
+  } else {
+    const passed = correctCount >= 16;
+    stats.exam.totalAttempts++;
+    if (passed) stats.exam.totalPassed++;
+    stats.exam.history.unshift({
+      date: new Date().toLocaleDateString('es-ES'),
+      correct: correctCount,
+      total: sessionResults.length,
+      passed,
+      timeExpired: fromTimer
+    });
+    if (stats.exam.history.length > 20) stats.exam.history = stats.exam.history.slice(0, 20);
+  }
+
+  saveStats(stats);
+  renderResults(fromTimer);
+  showScreen('screen-results');
+}
+
+// ════════════════════════════════════════════════════════════
+// RESULTS
+// ════════════════════════════════════════════════════════════
+function renderResults(fromTimer) {
+  const total = sessionResults.length;
+  const pct = total > 0 ? Math.round(correctCount / total * 100) : 0;
+  const isPractice = currentMode === 'practice';
+
+  const circumference = 376;
+  const offset = circumference - (pct / 100) * circumference;
+  const circle = document.getElementById('result-circle-fill');
+  circle.style.strokeDashoffset = circumference;
+  circle.style.stroke = pct >= 80 ? '#48bb78' : pct >= 50 ? '#ff8c00' : '#e53e3e';
+  setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+  document.getElementById('result-pct').textContent = pct + '%';
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-correct').textContent = correctCount;
+  document.getElementById('stat-wrong').textContent = wrongCount;
+
+  const verdict = document.getElementById('result-verdict');
+  const subtitle = document.getElementById('result-subtitle');
+
+  if (isPractice) {
+    if (pct >= 90) { verdict.textContent = '¡EXCELENTE!'; verdict.className = 'result-verdict pass'; subtitle.textContent = 'Dominas este tema. ¡Sigue así!'; }
+    else if (pct >= 70) { verdict.textContent = '¡BIEN HECHO!'; verdict.className = 'result-verdict pass'; subtitle.textContent = 'Buen resultado. Repasa los errores.'; }
+    else if (pct >= 50) { verdict.textContent = 'REGULAR'; verdict.className = 'result-verdict'; verdict.style.color = 'var(--orange)'; subtitle.textContent = '¡Hay margen de mejora!'; }
+    else { verdict.textContent = 'A REPASAR'; verdict.className = 'result-verdict fail'; subtitle.textContent = 'Repasa el temario de este tema.'; }
+  } else {
+    if (correctCount >= 16) { verdict.textContent = '¡APROBADO!'; verdict.className = 'result-verdict pass'; subtitle.textContent = '¡Has superado el examen!'; }
+    else { verdict.textContent = 'NO APTO'; verdict.className = 'result-verdict fail'; subtitle.textContent = 'Necesitas 16/20 para aprobar.'; }
+  }
+
+  const resultTimeup = document.getElementById('result-timeup');
+  if (fromTimer) {
+    resultTimeup.textContent = '⚠️ El tiempo se agotó. Nota calculada con las respuestas dadas.';
+    resultTimeup.style.display = 'block';
+  } else {
+    resultTimeup.style.display = 'none';
+  }
+
+  const passLine = document.getElementById('exam-pass-line');
+  if (!isPractice) {
+    passLine.style.display = 'block';
+    const gotClass = correctCount >= 16 ? 'pass' : 'fail';
+    passLine.innerHTML = `Mínimo para aprobar: <span class="need">16/20</span> · Obteniste: <span class="got ${gotClass}">${correctCount}/${total}</span>`;
+  } else {
+    passLine.style.display = 'none';
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// REVIEW
+// ════════════════════════════════════════════════════════════
+function renderReview() {
+  const list = document.getElementById('review-list');
+  list.innerHTML = sessionResults.map((r, i) => {
+    const letters = 'ABC';
+    return `
+      <div class="review-item ${r.isCorrect ? 'correct-q' : 'wrong-q'}">
+        <div class="review-q-header">
+          <span class="review-icon">${r.isCorrect ? '✅' : '❌'}</span>
+          <span class="review-num">PREGUNTA ${i + 1}${r.tema ? ' · ' + r.tema : ''}</span>
+        </div>
+        <div class="review-q-text">${r.question}</div>
+        <div class="review-answers">
+          ${r.answers.map((ans, ai) => {
+            let cls = 'review-answer';
+            if (ai === r.correct) cls += ' is-correct';
+            else if (ai === r.selected && !r.isCorrect) cls += ' was-selected wrong';
+            return `<div class="${cls}"><span class="review-letter">${letters[ai]}</span>${ans}</div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// TIMER
+// ════════════════════════════════════════════════════════════
+function startTimer(seconds) {
+  stopTimer();
+  timerSeconds = seconds;
+  totalTimerSeconds = seconds;
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerUI();
+    if (timerSeconds <= 0) { stopTimer(); handleTimeUp(); }
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function updateTimerUI() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  const display = document.getElementById('timer-display');
+  const fill = document.getElementById('timer-fill');
+  display.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  const pct = (timerSeconds / totalTimerSeconds) * 100;
+  fill.style.width = pct + '%';
+  display.className = 'timer-display';
+  if (timerSeconds <= 60) { display.classList.add('danger'); fill.style.background = 'var(--red)'; }
+  else if (timerSeconds <= 300) { display.classList.add('warning'); fill.style.background = 'linear-gradient(90deg,var(--orange),var(--orange-bright))'; }
+}
+
+function handleTimeUp() {
+  timeExpired = true;
+  document.getElementById('time-up-banner').style.display = 'block';
+  for (let i = currentQIndex; i < sessionQuestions.length; i++) {
+    if (!sessionResults[i]) {
+      const q = sessionQuestions[i];
+      sessionResults.push({ question: q.question, answers: q.answers, correct: q.correct, selected: -1, isCorrect: false, tema: q.tema || currentTema });
+      wrongCount++;
+    }
+  }
+  setTimeout(() => finishQuiz(true), 1500);
+}
+
+// ════════════════════════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════════════════════════
+let currentStatTab = 'practice';
+
+function switchStatTab(tab) {
+  currentStatTab = tab;
+  document.getElementById('tab-practice').className = 'stat-tab' + (tab === 'practice' ? ' active' : '');
+  document.getElementById('tab-exam').className = 'stat-tab' + (tab === 'exam' ? ' active' : '');
+  document.getElementById('stats-practice').style.display = tab === 'practice' ? 'block' : 'none';
+  document.getElementById('stats-exam').style.display = tab === 'exam' ? 'block' : 'none';
+}
+
+function renderStats() {
+  const stats = loadStats();
+  const pct = stats.practice.totalAnswered > 0 ? Math.round(stats.practice.totalCorrect / stats.practice.totalAnswered * 100) : 0;
+
+  document.getElementById('practice-overview').innerHTML = `
+    <div class="overview-card"><div class="ov-num">${stats.practice.totalSessions}</div><div class="ov-label">SESIONES</div></div>
+    <div class="overview-card"><div class="ov-num">${stats.practice.totalAnswered}</div><div class="ov-label">RESPONDIDAS</div></div>
+    <div class="overview-card"><div class="ov-num">${pct}%</div><div class="ov-label">ACIERTO</div></div>`;
+
+  const themeDiv = document.getElementById('practice-theme-stats');
+  if (Object.keys(stats.practice.byTheme).length === 0) {
+    themeDiv.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><p>Aún no has practicado ningún tema.<br>¡Empieza a entrenar!</p></div>`;
+  } else {
+    themeDiv.innerHTML = Object.keys(QUESTIONS_DATA).map(tema => {
+      const ts = stats.practice.byTheme[tema] || { correct: 0, answered: 0 };
+      const p = ts.answered > 0 ? Math.round(ts.correct / ts.answered * 100) : 0;
+      const color = p >= 80 ? '#48bb78' : p >= 50 ? '#ff8c00' : '#e53e3e';
+      return `
+        <div class="theme-stat-card">
+          <div class="theme-stat-header">
+            <span class="theme-stat-name">${tema} · ${THEME_NAMES[tema]}</span>
+            <span class="theme-stat-pct">${ts.answered > 0 ? p + '%' : '-'}</span>
+          </div>
+          <div class="theme-stat-track"><div class="theme-stat-fill" style="width:${p}%;background:${color}"></div></div>
+          <div class="theme-stat-counts">
+            <span class="count-correct">✓ ${ts.correct}</span>
+            <span class="count-wrong">✗ ${ts.answered - ts.correct}</span>
+            <span>${ts.answered} respondidas</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  const examPassPct = stats.exam.totalAttempts > 0 ? Math.round(stats.exam.totalPassed / stats.exam.totalAttempts * 100) : 0;
+  document.getElementById('exam-overview').innerHTML = `
+    <div class="overview-card"><div class="ov-num">${stats.exam.totalAttempts}</div><div class="ov-label">INTENTOS</div></div>
+    <div class="overview-card"><div class="ov-num">${stats.exam.totalPassed}</div><div class="ov-label">APROBADOS</div></div>
+    <div class="overview-card"><div class="ov-num">${examPassPct}%</div><div class="ov-label">TASA</div></div>`;
+
+  const histDiv = document.getElementById('exam-history');
+  if (stats.exam.history.length === 0) {
+    histDiv.innerHTML = `<div class="empty-state"><div class="empty-icon">🏆</div><p>Aún no has hecho ningún examen.<br>¡Atrévete con el modo examen!</p></div>`;
+  } else {
+    histDiv.innerHTML = stats.exam.history.map(h => {
+      const p = Math.round(h.correct / h.total * 100);
+      return `
+        <div class="history-item">
+          <div class="history-item-left">
+            <strong>${h.date} · ${h.passed ? '✅ APROBADO' : '❌ NO APTO'}</strong>
+            ${h.timeExpired ? '⚠️ Tiempo agotado · ' : ''}${h.correct}/${h.total} correctas
+          </div>
+          <div class="history-item-right ${h.passed ? 'pass' : 'fail'}">${p}%</div>
+        </div>`;
+    }).join('');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// MODALS
+// ════════════════════════════════════════════════════════════
+function confirmExit() {
+  showModal('¿SALIR DEL TEST?', 'Perderás el progreso de esta sesión.', () => { stopTimer(); goHome(); });
+}
+
+function confirmReset() {
+  showModal('¿RESETEAR STATS?', 'Se borrarán todas tus estadísticas y progreso. Esta acción no se puede deshacer.', () => { resetStats(); closeModal(); });
+}
+
+function showModal(title, text, onConfirm) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-text').textContent = text;
+  document.getElementById('modal-confirm-btn').onclick = () => { closeModal(); onConfirm(); };
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+// ════════════════════════════════════════════════════════════
+// PWA & INIT
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderThemeList();
+
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      console.log('SW registrado:', reg.scope);
+    }).catch(err => console.log('SW error:', err));
+  }
+
+  // iOS install banner
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone === true;
+  const bannerDismissed = localStorage.getItem('install_banner_dismissed');
+  if (isIOS && !isStandalone && !bannerDismissed) {
+    document.getElementById('install-banner').style.display = 'flex';
+  }
+
+  document.querySelector('.install-close').addEventListener('click', () => {
+    localStorage.setItem('install_banner_dismissed', '1');
+  });
+
+  // Offline indicator
+  function updateOnlineStatus() {
+    const pill = document.getElementById('offline-pill');
+    if (!navigator.onLine) {
+      pill.style.display = 'block';
+      setTimeout(() => { pill.style.display = 'none'; }, 3000);
+    }
+  }
+  window.addEventListener('offline', updateOnlineStatus);
+
+  // Modal overlay click
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Generate canvas icons for Apple Touch Icon
+  generateIcons();
+});
+
+function generateIcons() {
+  // Generate icon-192 and icon-512 as PNG via canvas
+  [192, 512].forEach(size => {
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const s = size;
+
+    // Background
+    ctx.fillStyle = '#1a2e1a';
+    ctx.fillRect(0, 0, s, s);
+
+    // Camo blobs
+    ctx.fillStyle = 'rgba(45,74,45,0.5)';
+    ctx.beginPath(); ctx.ellipse(s*0.2,s*0.3,s*0.18,s*0.12,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(61,107,61,0.4)';
+    ctx.beginPath(); ctx.ellipse(s*0.75,s*0.65,s*0.2,s*0.13,0.5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(45,74,45,0.35)';
+    ctx.beginPath(); ctx.ellipse(s*0.5,s*0.8,s*0.15,s*0.1,-0.3,0,Math.PI*2); ctx.fill();
+
+    // Crosshair circle
+    ctx.strokeStyle = '#ff6b00';
+    ctx.lineWidth = s * 0.025;
+    ctx.beginPath(); ctx.arc(s/2, s/2, s*0.35, 0, Math.PI*2); ctx.stroke();
+
+    // Crosshair lines
+    ctx.beginPath(); ctx.moveTo(s/2, s*0.08); ctx.lineTo(s/2, s*0.92); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*0.08, s/2); ctx.lineTo(s*0.92, s/2); ctx.stroke();
+
+    // Center dot
+    ctx.fillStyle = '#ff6b00';
+    ctx.beginPath(); ctx.arc(s/2, s/2, s*0.06, 0, Math.PI*2); ctx.fill();
+
+    // Inner dashed ring
+    ctx.strokeStyle = '#ff8c00';
+    ctx.lineWidth = s * 0.015;
+    ctx.setLineDash([s*0.04, s*0.04]);
+    ctx.beginPath(); ctx.arc(s/2, s/2, s*0.2, 0, Math.PI*2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('link');
+    link.rel = size === 192 ? 'apple-touch-icon' : 'icon';
+    link.href = dataURL;
+    if (size === 192) {
+      document.getElementById('apple-touch-icon').href = dataURL;
+    }
+  });
+}
+</script>
+</body>
+</html>
